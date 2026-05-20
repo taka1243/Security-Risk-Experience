@@ -1,0 +1,336 @@
+body {
+  margin: 0;
+  background-color: #eef2f7;
+  font-family: Arial, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  color: #202124;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 32px;
+}
+
+.mail-window {
+  max-width: 920px;
+  margin: 0 auto;
+  background: white;
+  border: 1px solid #dadce0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(60, 64, 67, 0.18);
+}
+
+.mail-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  background: #f8fafd;
+  border-bottom: 1px solid #e0e3e7;
+}
+
+.mail-toolbar button {
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #3c4043;
+  font-size: 14px;
+}
+
+.mail-toolbar button:hover {
+  background: #e8eaed;
+}
+
+.mail-count {
+  margin-left: auto;
+  color: #5f6368;
+  font-size: 14px;
+}
+
+.mail-header {
+  padding: 26px 42px 14px;
+}
+
+.mail-type-label {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eef3fd;
+  color: #1a73e8;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.mail-header h1 {
+  margin: 0 0 22px;
+  font-weight: 500;
+  color: #202124;
+  line-height: 1.35;
+}
+
+.phishing-title {
+  font-size: 30px;
+  letter-spacing: 0.02em;
+}
+
+.normal-title {
+  font-size: 25px;
+}
+
+.sender-area {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.phishing-avatar {
+  background: #5f6368;
+}
+
+.normal-avatar {
+  background: #1a73e8;
+}
+
+.sender-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.sender-email {
+  margin-top: 3px;
+  font-size: 14px;
+  color: #5f6368;
+}
+
+.mail-body {
+  padding: 20px 42px 34px;
+  line-height: 1.9;
+}
+
+.phishing-body {
+  font-size: 17px;
+}
+
+.normal-body {
+  font-size: 15px;
+}
+
+.mail-body p {
+  margin: 0 0 12px;
+}
+
+.blank-line {
+  height: 10px;
+}
+
+.danger-word {
+  color: #d93025;
+  font-weight: bold;
+}
+
+.mail-link {
+  display: inline-block;
+  margin-top: 16px;
+  text-decoration: underline;
+  word-break: break-all;
+  font-weight: bold;
+}
+
+.suspicious-link {
+  color: #1a73e8;
+  font-size: 17px;
+}
+
+.normal-link {
+  color: #1a73e8;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.attachment-card {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: fit-content;
+  max-width: 360px;
+  padding: 14px 18px;
+  border: 1px solid #dadce0;
+  border-radius: 10px;
+  background: #f8f9fa;
+  color: #202124;
+  text-decoration: none;
+}
+
+.attachment-card:hover {
+  background: #eef3fd;
+}
+
+.attachment-icon {
+  font-size: 24px;
+}
+
+.attachment-name {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.attachment-info {
+  margin-top: 3px;
+  font-size: 13px;
+  color: #5f6368;
+}
+
+.answer-area {
+  border-top: 1px solid #e0e3e7;
+  padding: 22px 42px;
+  background: #fafafa;
+}
+
+.answer-area p {
+  margin: 0 0 14px;
+  font-weight: bold;
+}
+
+.answer-buttons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.answer-buttons button {
+  padding: 11px 20px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.safe-answer-button {
+  border: 1px solid #34a853;
+  background: white;
+  color: #188038;
+}
+
+.safe-answer-button:hover {
+  background: #e6f4ea;
+}
+
+.phishing-answer-button {
+  border: 1px solid #d93025;
+  background: white;
+  color: #d93025;
+}
+
+.phishing-answer-button:hover {
+  background: #fce8e6;
+}
+
+.result-box {
+  margin: 0 42px 32px;
+  padding: 22px;
+  border-radius: 12px;
+}
+
+.correct-result {
+  background: #e6f4ea;
+  border: 1px solid #34a853;
+}
+
+.wrong-result {
+  background: #fce8e6;
+  border: 1px solid #d93025;
+}
+
+.result-box h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+.result-box h3 {
+  margin-top: 18px;
+  margin-bottom: 8px;
+}
+
+.result-box ul {
+  margin: 0 0 18px;
+  padding-left: 22px;
+}
+
+.result-box li {
+  margin-bottom: 6px;
+}
+
+.normal-explanation {
+  color: #3c4043;
+}
+
+.result-box button,
+.next-area button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #1a73e8;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.result-box button:hover,
+.next-area button:hover {
+  background: #1558b0;
+}
+
+.next-area {
+  padding: 20px 42px 34px;
+  text-align: right;
+}
+
+@media (max-width: 700px) {
+  .app {
+    padding: 14px;
+  }
+
+  .mail-header,
+  .mail-body,
+  .answer-area {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .phishing-title {
+    font-size: 24px;
+  }
+
+  .normal-title {
+    font-size: 22px;
+  }
+
+  .phishing-body,
+  .normal-body {
+    font-size: 15px;
+  }
+
+  .result-box {
+    margin-left: 22px;
+    margin-right: 22px;
+  }
+
+  .next-area {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+}
