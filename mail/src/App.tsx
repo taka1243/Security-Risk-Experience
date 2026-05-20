@@ -2,11 +2,18 @@ import { useState } from "react";
 import "./App.css";
 
 import phishingMails from "./data/phishingMails";
+import InfectedScreen from "./components/InfectedScreen";
 
 function App() {
   const [mailIndex, setMailIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<"safe" | "phishing" | "">("");
+
+  const [selectedAnswer, setSelectedAnswer] = useState<
+    "safe" | "phishing" | ""
+  >("");
+
   const [showResult, setShowResult] = useState(false);
+
+  const [isInfected, setIsInfected] = useState(false);
 
   const mail = phishingMails[mailIndex];
 
@@ -43,6 +50,7 @@ function App() {
         }
 
         const splitParts = part.split(word);
+
         const result: string[] = [];
 
         splitParts.forEach((splitPart, index) => {
@@ -72,6 +80,13 @@ function App() {
 
   const handleAnswer = (answer: "safe" | "phishing") => {
     setSelectedAnswer(answer);
+
+    // フィッシングメールを安全だと判断した場合
+    if (mail.isPhishing && answer === "safe") {
+      setIsInfected(true);
+      return;
+    }
+
     setShowResult(true);
   };
 
@@ -81,24 +96,54 @@ function App() {
 
   const goNextMail = () => {
     setMailIndex((mailIndex + 1) % phishingMails.length);
+
     setSelectedAnswer("");
+
     setShowResult(false);
+
+    setIsInfected(false);
   };
 
   const goPrevMail = () => {
-    setMailIndex((mailIndex - 1 + phishingMails.length) % phishingMails.length);
+    setMailIndex(
+      (mailIndex - 1 + phishingMails.length) %
+        phishingMails.length
+    );
+
     setSelectedAnswer("");
+
     setShowResult(false);
+
+    setIsInfected(false);
   };
+
+  // 感染画面
+  if (isInfected) {
+    return (
+      <InfectedScreen
+        onRetry={() => {
+          setIsInfected(false);
+
+          setSelectedAnswer("");
+
+          setShowResult(false);
+        }}
+      />
+    );
+  }
 
   return (
     <div className="app">
       <div className="mail-window">
         <div className="mail-toolbar">
           <button onClick={goPrevMail}>←</button>
+
           <button>アーカイブ</button>
+
           <button>迷惑メール</button>
+
           <button>削除</button>
+
           <span className="mail-count">
             {mailIndex + 1} / {phishingMails.length}
           </span>
@@ -106,32 +151,66 @@ function App() {
 
         <div className="mail-header">
           <div className="mail-type-label">
-            {mail.isPhishing ? "判定対象メール" : "通常メール"}
+            {mail.isPhishing
+              ? "判定対象メール"
+              : "通常メール"}
           </div>
 
-          <h1 className={mail.isPhishing ? "phishing-title" : "normal-title"}>
+          <h1
+            className={
+              mail.isPhishing
+                ? "phishing-title"
+                : "normal-title"
+            }
+          >
             {mail.subject}
           </h1>
 
           <div className="sender-area">
-            <div className={mail.isPhishing ? "avatar phishing-avatar" : "avatar normal-avatar"}>
+            <div
+              className={
+                mail.isPhishing
+                  ? "avatar phishing-avatar"
+                  : "avatar normal-avatar"
+              }
+            >
               {mail.senderName.charAt(0)}
             </div>
 
             <div>
-              <div className="sender-name">{mail.senderName}</div>
-              <div className="sender-email">{mail.senderEmail}</div>
+              <div className="sender-name">
+                {mail.senderName}
+              </div>
+
+              <div className="sender-email">
+                {mail.senderEmail}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className={mail.isPhishing ? "mail-body phishing-body" : "mail-body normal-body"}>
+        <div
+          className={
+            mail.isPhishing
+              ? "mail-body phishing-body"
+              : "mail-body normal-body"
+          }
+        >
           {mail.body.split("\n").map((line, index) => {
             if (line.trim() === "") {
-              return <div key={index} className="blank-line" />;
+              return (
+                <div
+                  key={index}
+                  className="blank-line"
+                />
+              );
             }
 
-            return <p key={index}>{renderBodyLine(line)}</p>;
+            return (
+              <p key={index}>
+                {renderBodyLine(line)}
+              </p>
+            );
           })}
 
           {isAttachment ? (
@@ -140,22 +219,42 @@ function App() {
               className="attachment-card"
               onClick={(event) => {
                 event.preventDefault();
-                alert("これは学習用の疑似添付ファイルです。実際には開かないでください。");
+
+                alert(
+                  "これは学習用の疑似添付ファイルです。実際には開かないでください。"
+                );
               }}
             >
-              <div className="attachment-icon">📎</div>
+              <div className="attachment-icon">
+                📎
+              </div>
+
               <div>
-                <div className="attachment-name">{mail.linkText.replace("📎", "").trim()}</div>
-                <div className="attachment-info">ZIP ファイル</div>
+                <div className="attachment-name">
+                  {mail.linkText
+                    .replace("📎", "")
+                    .trim()}
+                </div>
+
+                <div className="attachment-info">
+                  ZIP ファイル
+                </div>
               </div>
             </a>
           ) : (
             <a
               href={mail.linkUrl}
-              className={mail.isPhishing ? "mail-link suspicious-link" : "mail-link normal-link"}
+              className={
+                mail.isPhishing
+                  ? "mail-link suspicious-link"
+                  : "mail-link normal-link"
+              }
               onClick={(event) => {
                 event.preventDefault();
-                alert("これは学習用の疑似リンクです。");
+
+                alert(
+                  "これは学習用の疑似リンクです。"
+                );
               }}
             >
               {mail.linkText}
@@ -164,51 +263,87 @@ function App() {
         </div>
 
         <div className="answer-area">
-          <p>このメールはフィッシングメールだと思いますか？</p>
+          <p>
+            このメールはフィッシングメールだと思いますか？
+          </p>
 
           <div className="answer-buttons">
-            <button className="safe-answer-button" onClick={() => handleAnswer("safe")}>
+            <button
+              className="safe-answer-button"
+              onClick={() =>
+                handleAnswer("safe")
+              }
+            >
               安全なメール
             </button>
 
-            <button className="phishing-answer-button" onClick={() => handleAnswer("phishing")}>
+            <button
+              className="phishing-answer-button"
+              onClick={() =>
+                handleAnswer("phishing")
+              }
+            >
               フィッシングメール
             </button>
           </div>
         </div>
 
         {showResult && (
-          <div className={isCorrect ? "result-box correct-result" : "result-box wrong-result"}>
-            <h2>{isCorrect ? "正解です" : "不正解です"}</h2>
+          <div
+            className={
+              isCorrect
+                ? "result-box correct-result"
+                : "result-box wrong-result"
+            }
+          >
+            <h2>
+              {isCorrect
+                ? "正解です"
+                : "不正解です"}
+            </h2>
 
             <p>
               このメールは
-              <strong>{mail.isPhishing ? " フィッシングメール " : " 通常メール "}</strong>
+              <strong>
+                {mail.isPhishing
+                  ? " フィッシングメール "
+                  : " 通常メール "}
+              </strong>
               です。
             </p>
 
             {mail.isPhishing ? (
               <>
                 <h3>怪しいポイント</h3>
+
                 <ul>
-                  {mail.suspiciousPoints.map((point, index) => (
-                    <li key={index}>{point}</li>
-                  ))}
+                  {mail.suspiciousPoints.map(
+                    (point, index) => (
+                      <li key={index}>
+                        {point}
+                      </li>
+                    )
+                  )}
                 </ul>
               </>
             ) : (
               <p className="normal-explanation">
-                送信元ドメインや本文内容が比較的自然で、強い脅しや不自然な外部URL誘導がありません。
+                送信元ドメインや本文内容が比較的自然で、
+                強い脅しや不自然な外部URL誘導がありません。
               </p>
             )}
 
-            <button onClick={goNextMail}>次のメールへ</button>
+            <button onClick={goNextMail}>
+              次のメールへ
+            </button>
           </div>
         )}
 
         {!showResult && (
           <div className="next-area">
-            <button onClick={goNextMail}>次のメールへ</button>
+            <button onClick={goNextMail}>
+              次のメールへ
+            </button>
           </div>
         )}
       </div>
