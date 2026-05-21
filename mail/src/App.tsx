@@ -2,7 +2,6 @@ import { useState } from "react";
 import "./App.css";
 
 import phishingMails from "./data/phishingMails";
-import InfectedScreen from "./components/InfectedScreen";
 
 function App() {
   const [mailIndex, setMailIndex] = useState(0);
@@ -12,8 +11,6 @@ function App() {
   >("");
 
   const [showResult, setShowResult] = useState(false);
-
-  const [isInfected, setIsInfected] = useState(false);
 
   const mail = phishingMails[mailIndex];
 
@@ -30,11 +27,28 @@ function App() {
     "お早めに",
   ];
 
+  const goFakeSupport = () => {
+    window.location.href = "/dist/mail/dist/fake_support/";
+  };
+
   const isAttachment =
     mail.linkText.includes("📎") ||
     mail.linkUrl.endsWith(".zip") ||
     mail.linkUrl.endsWith(".pdf") ||
     mail.linkUrl.endsWith(".docx");
+
+  const showUrlInfo = () => {
+    if (mail.isPhishing) {
+      alert(
+        `リンク先URL：${mail.linkUrl}`
+      );
+      return;
+    }
+
+    alert(
+      `リンク先URL：${mail.linkUrl}\n\nこのURLは通常メールとして設定されたURLです。\nただし、実際のメールでは必ず公式ドメインか確認してください。`
+    );
+  };
 
   const renderBodyLine = (line: string) => {
     if (!mail.isPhishing) {
@@ -50,7 +64,6 @@ function App() {
         }
 
         const splitParts = part.split(word);
-
         const result: string[] = [];
 
         splitParts.forEach((splitPart, index) => {
@@ -81,9 +94,8 @@ function App() {
   const handleAnswer = (answer: "safe" | "phishing") => {
     setSelectedAnswer(answer);
 
-    // フィッシングメールを安全だと判断した場合
     if (mail.isPhishing && answer === "safe") {
-      setIsInfected(true);
+      goFakeSupport();
       return;
     }
 
@@ -96,41 +108,18 @@ function App() {
 
   const goNextMail = () => {
     setMailIndex((mailIndex + 1) % phishingMails.length);
-
     setSelectedAnswer("");
-
     setShowResult(false);
-
-    setIsInfected(false);
   };
 
   const goPrevMail = () => {
     setMailIndex(
-      (mailIndex - 1 + phishingMails.length) %
-        phishingMails.length
+      (mailIndex - 1 + phishingMails.length) % phishingMails.length
     );
 
     setSelectedAnswer("");
-
     setShowResult(false);
-
-    setIsInfected(false);
   };
-
-  // 感染画面
-  if (isInfected) {
-    return (
-      <InfectedScreen
-        onRetry={() => {
-          setIsInfected(false);
-
-          setSelectedAnswer("");
-
-          setShowResult(false);
-        }}
-      />
-    );
-  }
 
   return (
     <div className="app">
@@ -151,16 +140,12 @@ function App() {
 
         <div className="mail-header">
           <div className="mail-type-label">
-            {mail.isPhishing
-              ? "判定対象メール"
-              : "通常メール"}
+            {mail.isPhishing ? "判定対象メール" : "通常メール"}
           </div>
 
           <h1
             className={
-              mail.isPhishing
-                ? "phishing-title"
-                : "normal-title"
+              mail.isPhishing ? "phishing-title" : "normal-title"
             }
           >
             {mail.subject}
@@ -178,13 +163,9 @@ function App() {
             </div>
 
             <div>
-              <div className="sender-name">
-                {mail.senderName}
-              </div>
+              <div className="sender-name">{mail.senderName}</div>
 
-              <div className="sender-email">
-                {mail.senderEmail}
-              </div>
+              <div className="sender-email">{mail.senderEmail}</div>
             </div>
           </div>
         </div>
@@ -198,47 +179,42 @@ function App() {
         >
           {mail.body.split("\n").map((line, index) => {
             if (line.trim() === "") {
-              return (
-                <div
-                  key={index}
-                  className="blank-line"
-                />
-              );
+              return <div key={index} className="blank-line" />;
             }
 
-            return (
-              <p key={index}>
-                {renderBodyLine(line)}
-              </p>
-            );
+            return <p key={index}>{renderBodyLine(line)}</p>;
           })}
 
           {isAttachment ? (
             <a
               href={mail.linkUrl}
               className="attachment-card"
+              title={`リンク先URL：${mail.linkUrl}`}
+              onContextMenu={(event) => {
+                event.preventDefault();
+                showUrlInfo();
+              }}
               onClick={(event) => {
                 event.preventDefault();
+
+                if (mail.isPhishing) {
+                  goFakeSupport();
+                  return;
+                }
 
                 alert(
                   "これは学習用の疑似添付ファイルです。実際には開かないでください。"
                 );
               }}
             >
-              <div className="attachment-icon">
-                📎
-              </div>
+              <div className="attachment-icon">📎</div>
 
               <div>
                 <div className="attachment-name">
-                  {mail.linkText
-                    .replace("📎", "")
-                    .trim()}
+                  {mail.linkText.replace("📎", "").trim()}
                 </div>
 
-                <div className="attachment-info">
-                  ZIP ファイル
-                </div>
+                <div className="attachment-info">ZIP ファイル</div>
               </div>
             </a>
           ) : (
@@ -249,12 +225,20 @@ function App() {
                   ? "mail-link suspicious-link"
                   : "mail-link normal-link"
               }
+              title={`リンク先URL：${mail.linkUrl}`}
+              onContextMenu={(event) => {
+                event.preventDefault();
+                showUrlInfo();
+              }}
               onClick={(event) => {
                 event.preventDefault();
 
-                alert(
-                  "これは学習用の疑似リンクです。"
-                );
+                if (mail.isPhishing) {
+                  goFakeSupport();
+                  return;
+                }
+
+                alert("これは学習用の疑似リンクです。");
               }}
             >
               {mail.linkText}
@@ -263,25 +247,19 @@ function App() {
         </div>
 
         <div className="answer-area">
-          <p>
-            このメールはフィッシングメールだと思いますか？
-          </p>
+          <p>このメールはフィッシングメールだと思いますか？</p>
 
           <div className="answer-buttons">
             <button
               className="safe-answer-button"
-              onClick={() =>
-                handleAnswer("safe")
-              }
+              onClick={() => handleAnswer("safe")}
             >
               安全なメール
             </button>
 
             <button
               className="phishing-answer-button"
-              onClick={() =>
-                handleAnswer("phishing")
-              }
+              onClick={() => handleAnswer("phishing")}
             >
               フィッシングメール
             </button>
@@ -296,11 +274,7 @@ function App() {
                 : "result-box wrong-result"
             }
           >
-            <h2>
-              {isCorrect
-                ? "正解です"
-                : "不正解です"}
-            </h2>
+            <h2>{isCorrect ? "正解です" : "不正解です"}</h2>
 
             <p>
               このメールは
@@ -317,13 +291,9 @@ function App() {
                 <h3>怪しいポイント</h3>
 
                 <ul>
-                  {mail.suspiciousPoints.map(
-                    (point, index) => (
-                      <li key={index}>
-                        {point}
-                      </li>
-                    )
-                  )}
+                  {mail.suspiciousPoints.map((point, index) => (
+                    <li key={index}>{point}</li>
+                  ))}
                 </ul>
               </>
             ) : (
@@ -333,17 +303,13 @@ function App() {
               </p>
             )}
 
-            <button onClick={goNextMail}>
-              次のメールへ
-            </button>
+            <button onClick={goNextMail}>次のメールへ</button>
           </div>
         )}
 
         {!showResult && (
           <div className="next-area">
-            <button onClick={goNextMail}>
-              次のメールへ
-            </button>
+            <button onClick={goNextMail}>次のメールへ</button>
           </div>
         )}
       </div>
