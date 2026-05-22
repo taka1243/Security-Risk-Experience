@@ -1,37 +1,56 @@
 from flask import Blueprint, jsonify, request
 from pathlib import Path
 import json
+import random
 
 game = Blueprint("game", __name__)
 
 DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "mails.json"
 
+random_questions = []
+
+
 def load_mails():
     with open(DATA_PATH, encoding="utf-8") as f:
         return json.load(f)
 
-@game.route("/question/<int:mail_id>", methods=["GET"])
-def get_question(mail_id):
+
+def generate_random_questions():
+    global random_questions
+
     mails = load_mails()
 
-    for mail in mails:
-        if mail["id"] == mail_id:
-            return jsonify(mail)
+    # 15件の中からランダム10問
+    question_count = min(10, len(mails))
 
-    return jsonify({"error": "mail not found"}), 404
+    random_questions = random.sample(mails, question_count)
+
+
+# 初回生成
+generate_random_questions()
+
+
+@game.route("/question/<int:index>", methods=["GET"])
+def get_question(index):
+
+    if index < 1 or index > len(random_questions):
+        return jsonify({"error": "question not found"}), 404
+
+    return jsonify(random_questions[index - 1])
 
 
 @game.route("/answer", methods=["POST"])
 def answer_question():
+
     data = request.get_json()
 
-    mail_id = data.get("questionId")
+    question_id = data.get("questionId")
     answer = data.get("answer")
 
-    mails = load_mails()
+    for mail in random_questions:
 
-    for mail in mails:
-        if mail["id"] == mail_id:
+        if mail["id"] == question_id:
+
             correct = (
                 mail["isPhishing"] and answer == "phishing"
             ) or (
@@ -49,8 +68,18 @@ def answer_question():
 
 @game.route("/questions/count", methods=["GET"])
 def get_question_count():
-    mails = load_mails()
 
     return jsonify({
-        "count": len(mails)
+        "count": len(random_questions)
+    })
+
+
+# リスタート時に新しくランダム生成
+@game.route("/questions/reset", methods=["POST"])
+def reset_questions():
+
+    generate_random_questions()
+
+    return jsonify({
+        "message": "questions reset"
     })
