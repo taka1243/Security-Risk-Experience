@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
-import json
 from pathlib import Path
+import json
 
 game = Blueprint("game", __name__)
 
@@ -16,52 +16,41 @@ def get_question(mail_id):
 
     for mail in mails:
         if mail["id"] == mail_id:
-            return jsonify({
-                "id": mail["id"],
-                "type": mail["type"],
-                "subject": mail["subject"],
-                "senderName": mail["senderName"],
-                "senderEmail": mail["senderEmail"],
-                "body": mail["body"],
-                "linkText": mail["linkText"],
-                "linkUrl": mail["linkUrl"]
-            })
+            return jsonify(mail)
 
-    return jsonify({
-        "error": "mail not found"
-    }), 404
+    return jsonify({"error": "mail not found"}), 404
 
-score = 0
 
 @game.route("/answer", methods=["POST"])
 def answer_question():
-    global score
-
     data = request.get_json()
 
     mail_id = data.get("questionId")
-    user_answer = data.get("answer")
+    answer = data.get("answer")
 
     mails = load_mails()
 
     for mail in mails:
         if mail["id"] == mail_id:
-            is_correct = (
-                user_answer == "phishing" and mail["isPhishing"]
+            correct = (
+                mail["isPhishing"] and answer == "phishing"
             ) or (
-                user_answer == "safe" and not mail["isPhishing"]
+                not mail["isPhishing"] and answer == "safe"
             )
 
-            if is_correct:
-                score += 10
-
             return jsonify({
-                "correct": is_correct,
-                "score": score,
-                "goToSupportScam": not is_correct,
+                "correct": correct,
+                "goToSupportScam": not correct,
                 "explanation": mail["suspiciousPoints"]
             })
 
+    return jsonify({"error": "mail not found"}), 404
+
+
+@game.route("/questions/count", methods=["GET"])
+def get_question_count():
+    mails = load_mails()
+
     return jsonify({
-        "error": "mail not found"
-    }), 404
+        "count": len(mails)
+    })
