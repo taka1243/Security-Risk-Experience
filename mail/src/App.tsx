@@ -27,8 +27,9 @@ function App() {
     "お早めに",
   ];
 
+  // ここを変更
   const goFakeSupport = () => {
-    window.location.href = "/dist/mail/dist/fake_support/";
+    window.location.href = "http://localhost:5174";
   };
 
   const isAttachment =
@@ -39,9 +40,7 @@ function App() {
 
   const showUrlInfo = () => {
     if (mail.isPhishing) {
-      alert(
-        `リンク先URL：${mail.linkUrl}`
-      );
+      alert(`リンク先URL：${mail.linkUrl}`);
       return;
     }
 
@@ -94,6 +93,7 @@ function App() {
   const handleAnswer = (answer: "safe" | "phishing") => {
     setSelectedAnswer(answer);
 
+    // フィッシングなのに安全と判断したら fake-supportへ
     if (mail.isPhishing && answer === "safe") {
       goFakeSupport();
       return;
