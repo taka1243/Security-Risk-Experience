@@ -87,20 +87,20 @@
     ]
   },
   {
-    "id": 6,
-    "type": "知人や上司を装う型",
-    "layout": "shared",
-    "isPhishing": true,
-    "subject": "至急確認お願いします",
-    "senderName": "田中教授",
-    "senderEmail": "tanaka-prof@shared-file-check.com",
-    "body": "会議資料を共有しました。\n\n以下のリンクから確認をお願いします。",
-    "linkText": "▼共有ファイルを開く",
-    "linkUrl": "http://shared-document-view-7208.example.invalid",
-    "suspiciousPoints": [
-      "共有サイトが不自然",
-      "送信元アドレスが怪しい",
-      "急がせている"
+     "id": 6,
+  "type": "フィッシングメール：Amazon偽装",
+  "layout": "amazon",
+  "isPhishing": true,
+  "subject": "Amazon.co.jp ご注文の発送",
+  "senderName": "Amazon",
+  "senderEmail": "auto-confirm@amazon.co.jp",
+  "body": "ご注文いただいた商品を発送しました。\n\n配送状況は注文履歴から確認できます。",
+  "linkText": "注文履歴を見る",
+  "linkUrl": "https://www.aamazon.co.jp/",
+  "suspiciousPoints": [
+    "URLのドメインが『aamazon』になっている",
+    "公式サイトに見せかけた偽URL",
+    "送信元やデザインが本物でもURL確認が重要"
     ]
   },
   {
