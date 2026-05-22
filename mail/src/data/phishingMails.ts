@@ -284,122 +284,132 @@ const phishingMails = [
   },
 
   {
-    id: 11,
-    type: "通常メール：大学からのお知らせ",
-    isPhishing: false,
-    subject: "【学務課】5月23日（金）2限の休講について",
-    senderName: "東京電機大学 学務課",
-    senderEmail: "gakumu@dendai.ac.jp",
-    body: `学生各位
+  id: 11,
+  type: "通常メール：Amazonセール通知",
+  isPhishing: false,
+  subject: "【Amazon】タイムセール祭り開催中",
+  senderName: "Amazon.co.jp",
+  senderEmail: "store-news@amazon.co.jp",
+  body: `侑 様
 
-以下の授業について、担当教員の都合により休講となります。
+Amazon タイムセール祭りが開催中です。
 
-対象授業：情報セキュリティ概論
-日時：5月23日（金）2限
-教室：5号館 5203教室
+人気商品が期間限定価格で販売されています。
 
-補講日については、後日 WebClass にて連絡します。
+・ゲーミングデバイス
+・PC周辺機器
+・日用品
+・ファッション
 
-東京電機大学 学務課`,
-    linkText: "WebClassを確認する",
-    linkUrl: "https://webclass.dendai.ac.jp",
-    suspiciousPoints: [],
-  },
+セール期間：
+5月22日 9:00 ～ 5月24日 23:59
 
-  {
-    id: 12,
-    type: "通常メール：課題提出確認",
-    isPhishing: false,
-    subject: "課題提出を受け付けました",
-    senderName: "WebClass",
-    senderEmail: "no-reply@webclass.dendai.ac.jp",
-    body: ` 様
+ぜひご利用ください。
 
-以下の課題提出を受け付けました。
+Amazon.co.jp`,
+  linkText: "セール会場を見る",
+  linkUrl: "https://www.amazon.co.jp",
+  suspiciousPoints: [],
+},
 
-科目名：情報システム設計
-課題名：第6回 演習課題
-提出日時：2026年5月20日 14:32
+{
+  id: 12,
+  type: "通常メール：Steamセール通知",
+  isPhishing: false,
+  subject: "Steamセールが開始されました",
+  senderName: "Steam",
+  senderEmail: "noreply@steampowered.com",
+  body: `こんにちは。
 
-提出内容は WebClass の課題ページから確認できます。
+ウィッシュリスト登録済みのゲームがセール対象になっています。
 
-このメールは自動送信されています。`,
-    linkText: "提出状況を確認する",
-    linkUrl: "https://webclass.dendai.ac.jp",
-    suspiciousPoints: [],
-  },
+・Cyberpunk 2077
+・ELDEN RING
+・Hades II
 
-  {
-    id: 13,
-    type: "通常メール：GitHub通知",
-    isPhishing: false,
-    subject: "[GitHub] Pull request was merged",
-    senderName: "GitHub",
-    senderEmail: "notifications@github.com",
-    body: `Hello,
+セール終了まで残り48時間です。
 
-Your pull request was successfully merged.
+Steamストアより詳細をご確認ください。`,
+  linkText: "Steamストアを開く",
+  linkUrl: "https://store.steampowered.com",
+  suspiciousPoints: [],
+},
+
+{
+  id: 13,
+  type: "通常メール：GitHub通知",
+  isPhishing: false,
+  subject: "[GitHub] Pull request merged into main",
+  senderName: "GitHub",
+  senderEmail: "notifications@github.com",
+  body: `Hello purasua6,
+
+Your pull request has been successfully merged.
 
 Repository:
 ruha321/Security-Risk-Experience
 
-Branch:
-phishing-mail-01
+Pull Request:
+通常メール追加とUI改善 #12
 
-Merged into:
-main
+Merged by:
+ruha321
 
-You are receiving this email because you are watching this repository.`,
-    linkText: "View pull request",
-    linkUrl: "https://github.com/ruha321/Security-Risk-Experience",
-    suspiciousPoints: [],
-  },
+You’re receiving this email because you subscribed to notifications on this repository.`,
+  linkText: "View pull request",
+  linkUrl: "https://github.com/ruha321/Security-Risk-Experience",
+  suspiciousPoints: [],
+},
 
-  {
-    id: 14,
-    type: "通常メール：図書館のお知らせ",
-    isPhishing: false,
-    subject: "【図書館】予約資料の準備ができました",
-    senderName: "東京電機大学 図書館",
-    senderEmail: "library@dendai.ac.jp",
-    body: `様
+{
+  id: 14,
+  type: "通常メール：Googleセキュリティ通知",
+  isPhishing: false,
+  subject: "Google アカウントのログイン通知",
+  senderName: "Google",
+  senderEmail: "no-reply@accounts.google.com",
+  body: `侑 様
 
-ご予約いただいた資料の準備ができました。
+お使いの Google アカウントに新しいログインがありました。
 
-資料名：はじめてのReact入門
-受取場所：東京千住キャンパス図書館
-取置期限：2026年5月27日
+日時：
+2026年5月22日 08:14
 
-学生証を持参のうえ、図書館カウンターまでお越しください。
+デバイス：
+Windows Chrome
 
-東京電機大学 図書館`,
-    linkText: "図書館マイページを確認する",
-    linkUrl: "https://library.dendai.ac.jp",
-    suspiciousPoints: [],
-  },
+このログインに心当たりがある場合、対応は不要です。
 
-  {
-    id: 15,
-    type: "通常メール：授業連絡",
-    isPhishing: false,
-    subject: "【連絡】次回授業で使用する資料について",
-    senderName: "佐藤先生",
-    senderEmail: "sato@dendai.ac.jp",
-    body: `受講者各位
+Google アカウント チーム`,
+  linkText: "Googleアカウントを確認する",
+  linkUrl: "https://myaccount.google.com",
+  suspiciousPoints: [],
+},
 
-次回の授業では、事前に配布したPDF資料を使用します。
+{
+  id: 15,
+  type: "通常メール：Discord通知",
+  isPhishing: false,
+  subject: "New login detected",
+  senderName: "Discord",
+  senderEmail: "noreply@discord.com",
+  body: `Hey purasua6,
 
-授業開始前までに、WebClass の「第7回資料」を確認しておいてください。
+We detected a login to your Discord account from a new location.
 
-なお、追加の提出物はありません。
+Location:
+Tokyo, Japan
 
-よろしくお願いします。
+Device:
+Chrome on Windows
 
-佐藤`,
-    linkText: "WebClassの資料ページを確認する",
-    linkUrl: "https://webclass.dendai.ac.jp",
-    suspiciousPoints: [],
-  },
+If this was you, no further action is required.
+
+Discord Security Team`,
+  linkText: "Open Discord",
+  linkUrl: "https://discord.com",
+  suspiciousPoints: [],
+},
 ];
 
 export default phishingMails;
