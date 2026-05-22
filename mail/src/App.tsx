@@ -6,6 +6,7 @@ import ScamPage from "./pages/ScamPage";
 
 type Mail = {
   id: number;
+
   type: string;
 
   isPhishing: boolean;
@@ -13,571 +14,662 @@ type Mail = {
   subject: string;
 
   senderName: string;
+
   senderEmail: string;
 
   body: string;
 
   linkText: string;
+
   linkUrl: string;
 
   suspiciousPoints: string[];
 };
 
 function App() {
-
-  /*
-    PAGE
-  */
-
   const [page, setPage] = useState<
-    "start" |
-    "game" |
-    "scam" |
-    "result"
+    "start" | "game" | "scam" | "result"
   >("start");
 
-  /*
-    MAIL
-  */
+  const [mailIndex, setMailIndex] = useState(0);
 
-  const [mailIndex, setMailIndex] =
-    useState(0);
+  const [mail, setMail] = useState<Mail | null>(null);
 
-  const [mail, setMail] =
-    useState<Mail | null>(null);
+  const [totalMails, setTotalMails] = useState(0);
 
-  const [totalMails, setTotalMails] =
-    useState(0);
+  const [, setSelectedAnswer] = useState<
+    "safe" | "phishing" | ""
+  >("");
 
-  /*
-    GAME STATE
-  */
+  const [showResult, setShowResult] = useState(false);
 
-  const [, setSelectedAnswer] =
-    useState<
-      "safe" |
-      "phishing" |
-      ""
-    >("");
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
-  const [showResult, setShowResult] =
-    useState(false);
+  const [score, setScore] = useState(0);
 
-  const [isCorrect, setIsCorrect] =
-    useState<boolean | null>(null);
+  const [life, setLife] = useState(3);
 
-  const [score, setScore] =
-    useState(0);
+  const [combo, setCombo] = useState(0);
 
-  /*
-    LOAD QUESTION COUNT
-  */
+  const [maxCombo, setMaxCombo] = useState(0);
+
+  const [urlPenaltyCount, setUrlPenaltyCount] = useState(0);
 
   useEffect(() => {
-
     fetch("/api/questions/count")
       .then((res) => res.json())
       .then((data) => {
-
         setTotalMails(data.count);
-
       });
-
   }, []);
 
-  /*
-    LOAD MAIL
-  */
-
   useEffect(() => {
-
     if (page !== "game") return;
 
-    fetch(
-      `/api/question/${mailIndex + 1}`
-    )
+    fetch(`/api/question/${mailIndex + 1}`)
       .then((res) => res.json())
       .then((data) => {
-
         setMail(data);
-
       });
-
   }, [mailIndex, page]);
 
-  /*
-    ANSWER
-  */
-
-  const handleAnswer = async (
-    answer: "safe" | "phishing"
-  ) => {
-
+  const handleAnswer = async (answer: "safe" | "phishing") => {
     if (!mail) return;
 
     setSelectedAnswer(answer);
 
-    const res = await fetch(
-      "/api/answer",
-      {
-        method: "POST",
+    const res = await fetch("/api/answer", {
+      method: "POST",
 
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-        body: JSON.stringify({
-          questionId: mail.id,
-          answer,
-        }),
+      body: JSON.stringify({
+        questionId: mail.id,
+        answer,
+      }),
+    });
+
+    const result = await res.json();
+
+    setIsCorrect(result.correct);
+
+    if (result.goToSupportScam) {
+      const nextLife = life - 1;
+
+      setLife(nextLife);
+      setCombo(0);
+
+      if (nextLife <= 0) {
+        setPage("result");
+        return;
       }
-    );
-
-    const result =
-      await res.json();
-
-    setIsCorrect(
-      result.correct
-    );
-
-    /*
-      WRONG
-    */
-
-    if (
-      result.goToSupportScam
-    ) {
 
       setPage("scam");
-
       return;
     }
 
-    /*
-      CORRECT
-    */
+    const nextCombo = combo + 1;
+    const comboBonus = Math.floor(nextCombo / 2) * 5;
+    const basePoint = mail.isPhishing ? 20 : 10;
 
-    setScore(score + 10);
-
+    setCombo(nextCombo);
+    setMaxCombo(Math.max(maxCombo, nextCombo));
+    setScore(score + basePoint + comboBonus);
     setShowResult(true);
   };
 
-  /*
-    NEXT MAIL
-  */
-
   const goNextMail = () => {
-
-    if (
-      mailIndex + 1 >=
-      totalMails
-    ) {
-
+    if (mailIndex + 1 >= totalMails) {
       setPage("result");
-
       return;
     }
 
-    setMailIndex(
-      mailIndex + 1
-    );
-
+    setMailIndex(mailIndex + 1);
     setSelectedAnswer("");
-
     setShowResult(false);
-
     setIsCorrect(null);
-
     setMail(null);
   };
 
-  /*
-    START PAGE
-  */
-
   if (page === "start") {
-
     return (
       <div className="start-screen">
+        <div className="start-card">
+          <div className="start-badge">
+            Click Trap
+          </div>
 
-        <h1>
-          Security Risk Experience
-        </h1>
+          <h1>Click Trap</h1>
 
-        <button
-          onClick={async () => {
+          <p className="start-subtitle">
+            フィッシングメールを見抜き、危険なリンクや不審なメールから身を守る体験型ゲームです。
+          </p>
 
-            await fetch(
-              "/api/questions/reset",
-              {
+          <div className="start-rule-grid">
+            <div className="start-rule-card">
+              <div className="rule-icon">✉️</div>
+              <h3>メールを確認</h3>
+              <p>件名・送信元・本文・リンク先をよく確認しましょう。</p>
+            </div>
+
+            <div className="start-rule-card">
+              <div className="rule-icon">❤️</div>
+              <h3>ライフ制</h3>
+              <p>間違えるとライフが減ります。0になるとゲーム終了です。</p>
+            </div>
+
+            <div className="start-rule-card">
+              <div className="rule-icon">🔥</div>
+              <h3>コンボボーナス</h3>
+              <p>連続正解するとスコアにボーナスが加算されます。</p>
+            </div>
+          </div>
+
+          <div className="start-warning">
+            ⚠️ 怪しいリンクを押すと減点されます
+          </div>
+
+          <button
+            className="start-main-button"
+            onClick={async () => {
+              await fetch("/api/questions/reset", {
                 method: "POST",
-              }
-            );
+              });
 
-            setMailIndex(0);
-
-            setMail(null);
-
-            setScore(0);
-
-            setShowResult(false);
-
-            setIsCorrect(null);
-
-            setPage("game");
-          }}
-        >
-          START
-        </button>
-
+              setMailIndex(0);
+              setMail(null);
+              setScore(0);
+              setLife(3);
+              setCombo(0);
+              setMaxCombo(0);
+              setUrlPenaltyCount(0);
+              setShowResult(false);
+              setIsCorrect(null);
+              setPage("game");
+            }}
+          >
+            ゲームを開始する
+          </button>
+        </div>
       </div>
     );
   }
 
-  /*
-    SCAM PAGE
-  */
-
   if (page === "scam") {
-
     return (
       <ScamPage
         onBack={() => {
-
           setShowResult(false);
-
           setIsCorrect(null);
-
           setPage("game");
         }}
       />
     );
   }
 
-  /*
-    RESULT PAGE
-  */
-
   if (page === "result") {
+    const lifeBonus = life * 20;
+    const finalScore = score + lifeBonus;
+    const isGameOver = life <= 0;
 
     return (
       <div className="result-screen">
+        <div className="result-card">
+          <div
+            className={
+              isGameOver
+                ? "result-badge result-badge-danger"
+                : "result-badge result-badge-clear"
+            }
+          >
+            {isGameOver ? "GAME OVER" : "GAME CLEAR"}
+          </div>
 
-        <h1>
-          Game Clear!
-        </h1>
+          <h1>
+            {isGameOver ? "ゲーム終了" : "クリア！"}
+          </h1>
 
-        <p>
+          <p className="result-lead">
+            {isGameOver
+              ? "ライフがなくなりました。もう一度挑戦してみましょう。"
+              : "すべての問題に挑戦しました。判定結果を確認しましょう。"}
+          </p>
 
-          Score:
+          <div className="final-score-box">
+            <span>Final Score</span>
+            <strong>{finalScore}</strong>
+          </div>
 
-          {" "}
+          <div className="result-grid">
+            <div className="score-card">
+              <span>基本スコア</span>
+              <strong>{score}</strong>
+            </div>
 
-          {score}
+            <div className="score-card">
+              <span>ライフボーナス</span>
+              <strong>+{lifeBonus}</strong>
+            </div>
 
-          {" / "}
+            <div className="score-card">
+              <span>最大コンボ</span>
+              <strong>{maxCombo}</strong>
+            </div>
 
-          {totalMails * 10}
+            <div className="score-card">
+              <span>誤クリック減点</span>
+              <strong>-{urlPenaltyCount * 10}</strong>
+            </div>
 
-        </p>
+            <div className="score-card">
+              <span>残りライフ</span>
+              <strong>{life > 0 ? "❤️".repeat(life) : "0"}</strong>
+            </div>
 
-        <button
-          onClick={async () => {
+            <div className="score-card">
+              <span>出題数</span>
+              <strong>{totalMails}</strong>
+            </div>
+          </div>
 
-            await fetch(
-              "/api/questions/reset",
-              {
+          <div className="result-comment">
+            {finalScore >= totalMails * 20
+              ? "素晴らしい判定力です。怪しいメールを冷静に確認できています。"
+              : finalScore >= totalMails * 10
+                ? "良い結果です。送信元やURLをさらに意識するとより安全です。"
+                : "メール内のリンクを押す前に、送信元とURLを確認する習慣をつけましょう。"}
+          </div>
+
+          <button
+            className="result-main-button"
+            onClick={async () => {
+              await fetch("/api/questions/reset", {
                 method: "POST",
-              }
-            );
+              });
 
-            setMailIndex(0);
-
-            setSelectedAnswer("");
-
-            setShowResult(false);
-
-            setIsCorrect(null);
-
-            setScore(0);
-
-            setMail(null);
-
-            setPage("start");
-          }}
-        >
-          Play Again
-        </button>
-
+              setMailIndex(0);
+              setSelectedAnswer("");
+              setShowResult(false);
+              setIsCorrect(null);
+              setScore(0);
+              setLife(3);
+              setCombo(0);
+              setMaxCombo(0);
+              setUrlPenaltyCount(0);
+              setMail(null);
+              setPage("start");
+            }}
+          >
+            もう一度プレイする
+          </button>
+        </div>
       </div>
     );
   }
-
-  /*
-    LOADING
-  */
 
   if (!mail) {
-
-    return (
-      <div>
-        読み込み中...
-      </div>
-    );
+    return <div className="loading">読み込み中...</div>;
   }
-
-  /*
-    GAME PAGE
-  */
 
   return (
     <div className="app">
+      <div className="mail-app-frame">
 
-      <div className="mail-window">
+        {/* TOP BAR */}
 
-        <div className="mail-toolbar">
+        <div className="mail-topbar">
 
-          <span className="mail-count">
-
-            {mailIndex + 1}
-
-            {" / "}
-
-            {totalMails}
-
-          </span>
-
-        </div>
-
-        <div className="mail-header">
-
-          <div className="mail-type-label">
-            判定対象メール
+          <div className="mail-service-name">
+            Mail Viewer
           </div>
 
-          <h1
-            className={
-              mail.isPhishing
-                ? "phishing-title"
-                : "normal-title"
-            }
-          >
-            {mail.subject}
-          </h1>
+          <div className="mail-status">
 
-          <div className="sender-area">
+            <span>
+              {mailIndex + 1} / {totalMails}
+            </span>
 
-            <div
-              className={
-                mail.isPhishing
-                  ? "avatar phishing-avatar"
-                  : "avatar normal-avatar"
-              }
-            >
-              {
-                mail.senderName
-                  .charAt(0)
-              }
-            </div>
+            <span>
+              Combo: {combo}
+            </span>
 
-            <div>
-
-              <div className="sender-name">
-                {mail.senderName}
-              </div>
-
-              <div className="sender-email">
-                {mail.senderEmail}
-              </div>
-
-            </div>
+            <span>
+              Life: {"❤️".repeat(life)}
+            </span>
 
           </div>
 
         </div>
 
-        <div
-          className={
-            mail.isPhishing
-              ? "mail-body phishing-body"
-              : "mail-body normal-body"
-          }
-        >
+        {/* LAYOUT */}
 
-          {
-            mail.body
-              .split("\n")
-              .map(
-                (
-                  line,
-                  index
-                ) => {
+        <div className="mail-layout">
 
-                  if (
-                    line.trim() === ""
-                  ) {
+          {/* SIDE MENU */}
 
-                    return (
-                      <div
-                        key={index}
-                        className="blank-line"
-                      />
-                    );
+          <aside className="mail-side-menu">
+
+            <div className="side-menu-item active">
+              受信トレイ
+            </div>
+
+            <div className="side-menu-item">
+              スター付き
+            </div>
+
+            <div className="side-menu-item">
+              送信済み
+            </div>
+
+            <div className="side-menu-item">
+              迷惑メール
+            </div>
+
+          </aside>
+
+          {/* MAIL READER */}
+
+          <main className="mail-reader">
+
+            {/* TOOLBAR */}
+
+            <div className="mail-reader-toolbar">
+
+              <button>戻る</button>
+
+              <button>アーカイブ</button>
+
+              <button>削除</button>
+
+              <button>その他</button>
+
+            </div>
+
+            {/* MAIL CARD */}
+
+            <article className="mail-card-real">
+
+              {/* SUBJECT */}
+
+              <div className="mail-subject-row">
+
+                <h1>
+                  {mail.subject}
+                </h1>
+
+                <span
+                  className={
+                    mail.isPhishing
+                      ? "mail-risk-badge danger"
+                      : "mail-risk-badge safe"
                   }
+                >
+                  判定対象
+                </span>
 
-                  return (
-                    <p key={index}>
-                      {line}
-                    </p>
-                  );
-                }
-              )
-          }
+              </div>
 
-          <a
-            href={mail.linkUrl}
-            className={
-              mail.isPhishing
-                ? "mail-link suspicious-link"
-                : "mail-link normal-link"
-            }
-            onClick={(event) => {
+              {/* META */}
 
-              event.preventDefault();
+              <div className="mail-meta-real">
 
-              if (
-                mail.isPhishing
-              ) {
+                <div
+                  className={
+                    mail.isPhishing
+                      ? "mail-avatar danger-avatar"
+                      : "mail-avatar safe-avatar"
+                  }
+                >
+                  {mail.senderName.charAt(0)}
+                </div>
 
-                setPage("scam");
+                <div className="mail-meta-text">
 
-                return;
-              }
+                  <div className="mail-sender-line">
 
-              alert(
-                "これは学習用の疑似リンクです。"
-              );
-            }}
-          >
-            {mail.linkText}
-          </a>
+                    <strong>
+                      {mail.senderName}
+                    </strong>
 
-        </div>
+                    <span>
+                      &lt;{mail.senderEmail}&gt;
+                    </span>
 
-        <div className="answer-area">
+                  </div>
 
-          <p>
-            このメールは
-            フィッシングメール
-            だと思いますか？
-          </p>
+                  <div className="mail-to-line">
+                    To: 自分
+                  </div>
 
-          <div className="answer-buttons">
+                </div>
 
-            <button
-              className="safe-answer-button"
-              onClick={() =>
-                handleAnswer("safe")
-              }
-            >
-              安全なメール
-            </button>
+                <div className="mail-date">
+                  今日 10:24
+                </div>
 
-            <button
-              className="phishing-answer-button"
-              onClick={() =>
-                handleAnswer(
-                  "phishing"
-                )
-              }
-            >
-              フィッシングメール
-            </button>
+              </div>
 
-          </div>
+              {/* MAIL BODY */}
 
-        </div>
-
-        {
-          showResult && (
-            <div
-              className={
-                isCorrect
-                  ? "result-box correct-result"
-                  : "result-box wrong-result"
-              }
-            >
-
-              <h2>
+              <div className="mail-content-real">
 
                 {
-                  isCorrect
-                    ? "正解です"
-                    : "不正解です"
-                }
+                  mail.body
+                    .split("\n")
+                    .map((line, index) => {
 
-              </h2>
+                      if (line.trim() === "") {
 
-              <p>
-
-                このメールは
-
-                <strong>
-
-                  {
-                    mail.isPhishing
-                      ? " フィッシングメール "
-                      : " 通常メール "
-                  }
-
-                </strong>
-
-                です。
-
-              </p>
-
-              {
-                mail.isPhishing && (
-                  <>
-
-                    <h3>
-                      怪しいポイント
-                    </h3>
-
-                    <ul>
-
-                      {
-                        mail.suspiciousPoints.map(
-                          (
-                            point,
-                            index
-                          ) => (
-                            <li key={index}>
-                              {point}
-                            </li>
-                          )
-                        )
+                        return (
+                          <div
+                            key={index}
+                            className="mail-space"
+                          />
+                        );
                       }
 
-                    </ul>
+                      return (
+                        <p key={index}>
+                          {line}
+                        </p>
+                      );
 
-                  </>
-                )
-              }
+                    })
+                }
 
-              <button
-                onClick={goNextMail}
-              >
-                次のメールへ
-              </button>
+                {/* LINK */}
+
+                <a
+                  href={mail.linkUrl}
+                  className={
+                    mail.isPhishing
+                      ? "real-mail-link danger-link"
+                      : "real-mail-link safe-link"
+                  }
+                  onClick={(event) => {
+
+                    event.preventDefault();
+
+                    if (mail.isPhishing) {
+
+                      const nextLife =
+                        life - 1;
+
+                      setScore(
+                        Math.max(
+                          0,
+                          score - 10
+                        )
+                      );
+
+                      setLife(nextLife);
+
+                      setCombo(0);
+
+                      setUrlPenaltyCount(
+                        urlPenaltyCount + 1
+                      );
+
+                      if (nextLife <= 0) {
+
+                        setPage("result");
+
+                        return;
+                      }
+
+                      setPage("scam");
+
+                      return;
+                    }
+
+                    alert(
+                      "これは学習用の疑似リンクです。"
+                    );
+
+                  }}
+                >
+                  {mail.linkText}
+                </a>
+
+                {/* URL PREVIEW */}
+
+                <div className="url-preview-box">
+
+                  リンク先:
+                  {" "}
+                  {mail.linkUrl}
+
+                </div>
+
+              </div>
+
+            </article>
+
+            {/* JUDGE PANEL */}
+
+            <div className="judge-panel">
+
+              <p>
+                このメールは
+                フィッシングメールだと思いますか？
+              </p>
+
+              <div className="answer-buttons">
+
+                <button
+                  className="safe-answer-button"
+                  onClick={() =>
+                    handleAnswer("safe")
+                  }
+                >
+                  安全なメール
+                </button>
+
+                <button
+                  className="phishing-answer-button"
+                  onClick={() =>
+                    handleAnswer("phishing")
+                  }
+                >
+                  フィッシングメール
+                </button>
+
+              </div>
 
             </div>
-          )
-        }
+
+            {/* RESULT */}
+
+            {
+              showResult && (
+
+                <div
+                  className={
+                    isCorrect
+                      ? "result-box correct-result"
+                      : "result-box wrong-result"
+                  }
+                >
+
+                  <h2>
+
+                    {
+                      isCorrect
+                        ? "正解です"
+                        : "不正解です"
+                    }
+
+                  </h2>
+
+                  <p>
+
+                    このメールは
+
+                    <strong>
+
+                      {
+                        mail.isPhishing
+                          ? " フィッシングメール "
+                          : " 通常メール "
+                      }
+
+                    </strong>
+
+                    です。
+
+                  </p>
+
+                  {
+                    mail.isPhishing && (
+
+                      <>
+
+                        <h3>
+                          怪しいポイント
+                        </h3>
+
+                        <ul>
+
+                          {
+                            mail.suspiciousPoints.map(
+                              (
+                                point,
+                                index
+                              ) => (
+
+                                <li key={index}>
+                                  {point}
+                                </li>
+
+                              )
+                            )
+                          }
+
+                        </ul>
+
+                      </>
+
+                    )
+                  }
+
+                  <button
+                    onClick={goNextMail}
+                  >
+                    次のメールへ
+                  </button>
+
+                </div>
+
+              )
+            }
+
+          </main>
+
+        </div>
 
       </div>
-
     </div>
   );
 }
