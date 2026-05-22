@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "type": "アカウント停止で脅す型",
+        "isPhishing": true,
+        "subject": "【重要】アカウント停止のお知らせ",
+        "senderName": "情報システム管理室",
+        "senderEmail": "support@example-security-check.com",
+        "body": "利用者各位\n\n現在、お客様のアカウントにおいて不審なログインが検出されました。\n\n安全確保のため、一時的にアカウント機能の制限を行っております。\n\n下記のリンクよりご本人確認を行ってください。\n確認が完了しない場合、アカウントは本日中に停止される可能性があります。\n\nご不明な点がございましたらお問い合わせください。",
+        "linkText": "▼確認はこちら",
+        "linkUrl": "http://example-security-check.com",
+        "suspiciousPoints": [
+            "「本日中」と急がせている",
+            "個人名が書かれていない",
+            "URLが公式サイトではない",
+            "不審ログインの詳細説明がない"
+        ]
+    },
+    {
+        "id": 2,
+        "type": "通常メール",
+        "isPhishing": false,
+        "subject": "授業資料公開のお知らせ",
+        "senderName": "情報セキュリティ演習",
+        "senderEmail": "teacher@university.ac.jp",
+        "body": "受講者各位\n\n本日の授業資料をLMSに公開しました。\n\n次回の授業までに内容を確認しておいてください。\n\nよろしくお願いいたします。",
+        "linkText": "LMSを開く",
+        "linkUrl": "https://lms.university.ac.jp",
+        "suspiciousPoints": [
+            "公式ドメインから送信されている",
+            "不自然に急がせていない",
+            "個人情報の入力を求めていない"
+        ]
+    }
+]
