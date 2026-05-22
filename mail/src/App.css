@@ -14,7 +14,9 @@ body,
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-  background: #f1f3f6;
+
+  background: #f1f5f9;
+
   color: #111827;
 }
 
@@ -23,271 +25,990 @@ body {
 }
 
 /* =========================
-   START / RESULT
+   BASE
 ========================= */
 
 .app,
-.start-screen,
-.result-screen,
 .loading {
   min-height: 100vh;
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   padding: 32px;
 }
 
-.start-screen,
-.result-screen {
-  flex-direction: column;
-  background: #f8fafc;
-  color: #111827;
+/* =========================
+   START SCREEN
+========================= */
+
+.start-screen {
+  min-height: 100vh;
+
+  padding: 40px 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    radial-gradient(circle at top left,
+      #bfdbfe,
+      transparent 30%),
+
+    radial-gradient(circle at bottom right,
+      #fecaca,
+      transparent 28%),
+
+    linear-gradient(135deg,
+      #f8fafc,
+      #e0f2fe);
 }
 
-.start-screen h1,
-.result-screen h1 {
-  font-size: 42px;
-  margin-bottom: 10px;
+.start-card {
+  width: min(1080px, 100%);
+
+  background:
+    rgba(255, 255, 255, 0.94);
+
+  border:
+    1px solid #e5e7eb;
+
+  border-radius: 32px;
+
+  padding: 52px;
+
+  text-align: center;
+
+  box-shadow:
+    0 30px 90px rgba(15, 23, 42, 0.16);
+
+  backdrop-filter: blur(8px);
 }
 
-.start-screen button,
-.result-screen button {
-  margin-top: 24px;
-  padding: 14px 36px;
-  border: none;
+.start-badge {
+  display: inline-flex;
+
+  padding: 8px 18px;
+
   border-radius: 999px;
-  background: #38bdf8;
-  color: #0f172a;
-  font-weight: 800;
-  font-size: 18px;
-  cursor: pointer;
+
+  background: #dbeafe;
+
+  color: #1d4ed8;
+
+  font-size: 13px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+
+  margin-bottom: 22px;
 }
 
-.start-screen button:hover,
-.result-screen button:hover {
-  background: #0ea5e9;
+.start-card h1 {
+  margin: 0;
+
+  font-size:
+    clamp(42px, 7vw, 76px);
+
+  line-height: 1.05;
+
+  font-weight: 900;
+
+  color: #0f172a;
+}
+
+.start-subtitle {
+  max-width: 760px;
+
+  margin: 24px auto 0;
+
+  color: #475569;
+
+  font-size: 19px;
+
+  line-height: 1.9;
+}
+
+.start-rule-grid {
+  margin-top: 42px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 20px;
+}
+
+.start-rule-card {
+  background: #f8fafc;
+
+  border:
+    1px solid #e5e7eb;
+
+  border-radius: 24px;
+
+  padding: 28px 24px;
+
+  text-align: left;
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.start-rule-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.rule-icon {
+  font-size: 36px;
+
+  margin-bottom: 16px;
+}
+
+.start-rule-card h3 {
+  margin: 0 0 12px;
+
+  font-size: 22px;
+
+  color: #0f172a;
+}
+
+.start-rule-card p {
+  margin: 0;
+
+  color: #64748b;
+
+  line-height: 1.8;
+}
+
+.start-warning {
+  margin: 34px auto 0;
+
+  width: fit-content;
+
+  padding: 14px 22px;
+
+  border-radius: 999px;
+
+  background: #fff7ed;
+
+  color: #9a3412;
+
+  font-weight: 900;
+
+  border:
+    1px solid #fdba74;
+}
+
+.start-main-button {
+  margin-top: 36px;
+
+  border: none;
+
+  border-radius: 999px;
+
+  padding: 18px 56px;
+
+  background: #2563eb;
+
+  color: white;
+
+  font-size: 20px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
+
+  box-shadow:
+    0 18px 40px rgba(37, 99, 235, 0.35);
+}
+
+.start-main-button:hover {
+  transform: translateY(-3px);
+
+  background: #1d4ed8;
+
+  box-shadow:
+    0 24px 52px rgba(37, 99, 235, 0.45);
 }
 
 /* =========================
-   MAIL
+   RESULT SCREEN
 ========================= */
 
-.mail-window {
-  width: min(920px, 100%);
-  background: white;
-  border-radius: 22px;
-  overflow: hidden;
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.2);
-}
-
-.mail-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 22px;
-  background: #f8fafc;
-  border-bottom: 1px solid #e5e7eb;
-  color: #475569;
-  font-size: 14px;
-}
-
-.mail-count {
-  font-weight: 700;
-}
-
-.mail-header {
-  padding: 26px 32px 16px;
-}
-
-.mail-type-label {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 800;
-  margin-bottom: 14px;
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-
-.mail-header h1 {
-  margin: 0 0 18px;
-  font-size: 28px;
-  line-height: 1.35;
-}
-
-.phishing-title {
-  color: #991b1b;
-}
-
-.normal-title {
-  color: #111827;
-}
-
-.sender-area {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: #f8fafc;
-}
-
-.avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+.result-screen {
+  min-height: 100vh;
+  padding: 40px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #111827;
+  background:
+    radial-gradient(circle at top left, #bfdbfe, transparent 30%),
+    radial-gradient(circle at bottom right, #bbf7d0, transparent 28%),
+    linear-gradient(135deg, #f8fafc, #dbeafe);
+}
+
+.result-card {
+  width: min(1040px, 100%);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #e5e7eb;
+  border-radius: 32px;
+  padding: 50px;
+  text-align: center;
+  box-shadow: 0 30px 90px rgba(15, 23, 42, 0.14);
+}
+
+.result-badge {
+  display: inline-flex;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
   font-weight: 900;
-  font-size: 20px;
+  letter-spacing: 0.08em;
 }
 
-.phishing-avatar {
-  background: #fecaca;
+.result-badge-clear {
+  background: #dcfce7;
+  color: #166534;
 }
 
-.normal-avatar {
-  background: #bfdbfe;
+.result-badge-danger {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
-.sender-name {
+.result-card h1 {
+  margin: 16px 0 0;
+  font-size: clamp(42px, 7vw, 72px);
+  line-height: 1.05;
+  color: #0f172a;
+}
+
+.result-lead {
+  margin: 20px auto 0;
+  max-width: 720px;
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.final-score-box {
+  margin: 38px auto 0;
+  width: min(520px, 100%);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border-radius: 30px;
+  padding: 36px;
+  color: white;
+  box-shadow: 0 24px 60px rgba(37, 99, 235, 0.32);
+}
+
+.final-score-box span {
+  display: block;
+  font-size: 16px;
+  opacity: 0.9;
   font-weight: 800;
-  color: #111827;
 }
 
-.sender-email {
+.final-score-box strong {
+  display: block;
+  margin-top: 10px;
+  font-size: clamp(54px, 10vw, 92px);
+  line-height: 1;
+  font-weight: 900;
+}
+
+.result-grid {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.score-card {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 26px 20px;
+}
+
+.score-card span {
+  display: block;
   color: #64748b;
   font-size: 14px;
+  font-weight: 800;
 }
 
-.mail-body {
-  margin: 10px 32px 28px;
-  padding: 28px;
+.score-card strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 30px;
+  color: #0f172a;
+}
+
+.result-comment {
+  margin: 34px auto 0;
+  max-width: 760px;
+  padding: 18px 22px;
   border-radius: 18px;
-  line-height: 1.8;
-  color: #111827;
-}
-
-.phishing-body {
-  border: 2px solid #fecaca;
-  background: #fff7f7;
-}
-
-.normal-body {
+  background: #f8fafc;
   border: 1px solid #e5e7eb;
-  background: white;
+  color: #334155;
+  line-height: 1.8;
+  font-weight: 700;
 }
 
-.mail-body p {
-  margin: 0 0 10px;
-}
-
-.blank-line {
-  height: 12px;
-}
-
-.mail-link {
-  display: inline-flex;
-  margin-top: 20px;
-  padding: 13px 22px;
-  border-radius: 12px;
+.result-main-button {
+  margin-top: 34px;
+  border: none;
+  border-radius: 999px;
+  padding: 18px 54px;
+  background: #2563eb;
+  color: white;
+  font-size: 19px;
   font-weight: 900;
-  text-decoration: none;
-  color: #111827;
-  transition:
-    transform 0.15s,
-    box-shadow 0.15s;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.3);
 }
 
-.mail-link:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+.result-main-button:hover {
+  transform: translateY(-3px);
+  background: #1d4ed8;
 }
 
-.suspicious-link {
-  background: #fecaca;
-}
+@media (max-width: 760px) {
+  .result-card {
+    padding: 32px 22px;
+  }
 
-.normal-link {
-  background: #bfdbfe;
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* =========================
-   ANSWER
+   MAIL APP
 ========================= */
 
-.answer-area {
-  padding: 24px 32px 32px;
-  border-top: 1px solid #e5e7eb;
-  background: #f8fafc;
+.mail-app-frame {
+  width: min(1180px, 100%);
+  height: min(860px, 94vh);
+
+  background: #ffffff;
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+
+  box-shadow:
+    0 28px 90px rgba(15, 23, 42, 0.18);
 }
 
-.answer-area p {
-  margin-top: 0;
+/* =========================
+   TOP BAR
+========================= */
+
+.mail-topbar {
+  height: 58px;
+
+  padding: 0 22px;
+
+  background: #f8fafc;
+
+  border-bottom:
+    1px solid #e5e7eb;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.mail-service-name {
+  font-size: 18px;
+
+  font-weight: 900;
+
+  color: #0f172a;
+}
+
+.mail-status {
+  display: flex;
+
+  gap: 18px;
+
   font-weight: 800;
+
+  color: #334155;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.mail-layout {
+  flex: 1;
+
+  display: flex;
+
+  min-height: 0;
+}
+
+/* =========================
+   SIDE MENU
+========================= */
+
+.mail-side-menu {
+  width: 220px;
+
+  background: #f8fafc;
+
+  border-right:
+    1px solid #e5e7eb;
+
+  padding: 20px 12px;
+}
+
+.side-menu-item {
+  padding: 12px 16px;
+
+  border-radius: 999px;
+
+  margin-bottom: 8px;
+
+  color: #475569;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.side-menu-item:hover {
+  background: #e2e8f0;
+}
+
+.side-menu-item.active {
+  background: #dbeafe;
+
+  color: #1d4ed8;
+
+  font-weight: 900;
+}
+
+/* =========================
+   MAIL READER
+========================= */
+
+.mail-reader {
+  flex: 1;
+
+  background: #f1f5f9;
+
+  padding: 22px 28px;
+
+  overflow-y: auto;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.mail-reader-toolbar {
+  display: flex;
+
+  gap: 10px;
+
+  margin-bottom: 18px;
+}
+
+.mail-reader-toolbar button {
+  border:
+    1px solid #cbd5e1;
+
+  background: white;
+
+  border-radius: 999px;
+
+  padding: 8px 14px;
+
+  font-weight: 700;
+
+  color: #334155;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.mail-reader-toolbar button:hover {
+  background: #f8fafc;
+
+  transform: translateY(-1px);
+}
+
+/* =========================
+   MAIL CARD
+========================= */
+
+.mail-card-real {
+  background: white;
+
+  border:
+    1px solid #e5e7eb;
+
+  border-radius: 22px;
+
+  padding: 30px;
+
+  box-shadow:
+    0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+/* =========================
+   SUBJECT
+========================= */
+
+.mail-subject-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 16px;
+
+  padding-bottom: 20px;
+
+  border-bottom:
+    1px solid #e5e7eb;
+}
+
+.mail-subject-row h1 {
+  margin: 0;
+
+  font-size: 30px;
+
+  line-height: 1.35;
+
   color: #111827;
 }
+
+.mail-risk-badge {
+  white-space: nowrap;
+
+  padding: 7px 14px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+
+  font-weight: 900;
+}
+
+.mail-risk-badge.danger {
+  background: #fee2e2;
+
+  color: #991b1b;
+}
+
+.mail-risk-badge.safe {
+  background: #dcfce7;
+
+  color: #166534;
+}
+
+/* =========================
+   META
+========================= */
+
+.mail-meta-real {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 20px 0;
+}
+
+.mail-avatar {
+  width: 48px;
+
+  height: 48px;
+
+  border-radius: 50%;
+
+  display: grid;
+
+  place-items: center;
+
+  font-size: 20px;
+
+  font-weight: 900;
+}
+
+.danger-avatar {
+  background: #fecaca;
+
+  color: #991b1b;
+}
+
+.safe-avatar {
+  background: #bfdbfe;
+
+  color: #1d4ed8;
+}
+
+.mail-meta-text {
+  flex: 1;
+}
+
+.mail-sender-line {
+  display: flex;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  color: #111827;
+}
+
+.mail-sender-line span {
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+.mail-to-line {
+  margin-top: 4px;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+.mail-date {
+  color: #64748b;
+
+  font-size: 14px;
+
+  white-space: nowrap;
+}
+
+/* =========================
+   MAIL BODY
+========================= */
+
+.mail-content-real {
+  border-top:
+    1px solid #f1f5f9;
+
+  padding-top: 24px;
+
+  color: #1f2937;
+
+  line-height: 1.9;
+
+  font-size: 16px;
+}
+
+.mail-content-real p {
+  margin: 0 0 12px;
+}
+
+.mail-space {
+  height: 12px;
+}
+
+/* =========================
+   LINK
+========================= */
+
+.real-mail-link {
+  display: inline-flex;
+
+  margin-top: 22px;
+
+  padding: 13px 22px;
+
+  border-radius: 10px;
+
+  font-weight: 900;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.real-mail-link:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 22px rgba(15, 23, 42, 0.12);
+}
+
+.danger-link {
+  background: #fecaca;
+
+  color: #991b1b;
+}
+
+.safe-link {
+  background: #dbeafe;
+
+  color: #1d4ed8;
+}
+
+/* =========================
+   URL PREVIEW
+========================= */
+
+.url-preview-box {
+  margin-top: 16px;
+
+  padding: 12px 14px;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  border:
+    1px dashed #cbd5e1;
+
+  color: #475569;
+
+  font-size: 13px;
+
+  word-break: break-all;
+}
+
+/* =========================
+   JUDGE PANEL
+========================= */
+
+.judge-panel {
+  margin-top: 20px;
+
+  background: white;
+
+  border:
+    1px solid #e5e7eb;
+
+  border-radius: 18px;
+
+  padding: 22px;
+}
+
+.judge-panel p {
+  margin: 0 0 16px;
+
+  font-size: 17px;
+
+  font-weight: 900;
+
+  color: #111827;
+}
+
+/* =========================
+   ANSWER BUTTONS
+========================= */
 
 .answer-buttons {
   display: flex;
+
   gap: 14px;
+
   flex-wrap: wrap;
 }
 
-.answer-buttons button,
-.result-box button {
+.answer-buttons button {
   border: none;
+
   border-radius: 12px;
-  padding: 13px 20px;
+
+  padding: 14px 22px;
+
+  font-size: 15px;
+
   font-weight: 900;
+
   cursor: pointer;
-  color: #111827;
+
+  transition:
+    transform 0.2s,
+    opacity 0.2s;
+}
+
+.answer-buttons button:hover {
+  transform: translateY(-2px);
+
+  opacity: 0.92;
 }
 
 .safe-answer-button {
   background: #bbf7d0;
+
+  color: #166534;
 }
 
 .phishing-answer-button {
   background: #fecaca;
+
+  color: #991b1b;
 }
 
 /* =========================
-   RESULT BOX
+  RESULT BOX
 ========================= */
 
 .result-box {
-  margin: 0 32px 32px;
-  padding: 24px;
+  margin-top: 20px;
+
   border-radius: 18px;
-  color: #111827;
+
+  padding: 24px;
 }
 
 .correct-result {
   background: #ecfdf5;
-  border: 2px solid #22c55e;
+
+  border:
+    2px solid #22c55e;
 }
 
 .wrong-result {
   background: #fef2f2;
-  border: 2px solid #ef4444;
+
+  border:
+    2px solid #ef4444;
 }
 
 .result-box h2 {
   margin-top: 0;
+
+  font-size: 28px;
+}
+
+.result-box h3 {
+  margin-top: 22px;
+}
+
+.result-box ul {
+  padding-left: 22px;
+}
+
+.result-box li {
+  margin-bottom: 8px;
+
+  line-height: 1.7;
 }
 
 .result-box button {
-  margin-top: 14px;
-  background: #e5e7eb;
-  color: #111827;
+  margin-top: 18px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  padding: 14px 22px;
+
+  background: #2563eb;
+
+  color: white;
+
+  font-weight: 900;
+
+  cursor: pointer;
 }
 
-.result-box button:hover {
-  background: #d1d5db;
+/* =========================
+  MOBILE
+========================= */
+
+@media (max-width: 900px) {
+
+  .mail-side-menu {
+    display: none;
+  }
+
+  .mail-reader {
+    padding: 16px;
+  }
+
+  .mail-status {
+    flex-direction: column;
+
+    gap: 4px;
+
+    font-size: 13px;
+  }
+
+  .mail-subject-row {
+    flex-direction: column;
+  }
+
+  .mail-meta-real {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .mail-app-frame {
+    height: auto;
+
+    min-height: 100vh;
+
+    border-radius: 0;
+  }
+
+  .mail-reader-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .answer-buttons {
+    flex-direction: column;
+  }
+
+  .mail-card-real {
+    padding: 22px;
+  }
+
+  .mail-subject-row h1 {
+    font-size: 24px;
+  }
 }
 
 /* =========================
@@ -300,7 +1021,6 @@ body {
   background: #eef1f5;
   color: #111827;
   z-index: 9999;
-  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
 .scam-window {
@@ -312,29 +1032,28 @@ body {
 }
 
 .scam-titlebar {
-  height: 48px;
-  background: white;
+  height: 50px;
+  background: #ffffff;
   border-bottom: 1px solid #d1d5db;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 14px;
-  color: #111827;
 }
 
 .scam-title-left {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .scam-shield {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  background: #bfdbfe;
-  color: #111827;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: #dbeafe;
+  color: #1d4ed8;
   display: grid;
   place-items: center;
   font-weight: 900;
@@ -343,7 +1062,6 @@ body {
 .scam-close-button {
   border: none;
   background: transparent;
-  color: #111827;
   font-size: 20px;
   cursor: pointer;
   padding: 8px 14px;
@@ -356,6 +1074,7 @@ body {
 .scam-main {
   flex: 1;
   display: flex;
+  min-height: 0;
 }
 
 .scam-sidebar {
@@ -368,64 +1087,93 @@ body {
 .scam-sidebar div {
   padding: 16px 24px;
   font-size: 15px;
-  color: #111827;
 }
 
 .scam-sidebar-active {
   background: #dbeafe;
   border-left: 5px solid #2563eb;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .scam-content {
   flex: 1;
-  padding: 42px;
+  padding: 34px 42px;
   position: relative;
-  color: #111827;
+  overflow-y: auto;
 }
 
-.scam-alert-header {
+.simulation-ribbon {
+  display: inline-flex;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fdba74;
+  font-weight: 900;
+  margin-bottom: 24px;
+}
+
+.scam-hero {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
 }
 
 .scam-alert-icon {
-  width: 76px;
-  height: 76px;
+  width: 82px;
+  height: 82px;
   border-radius: 50%;
-  background: #fecaca;
-  color: #111827;
+  background: #fee2e2;
+  color: #991b1b;
   display: grid;
   place-items: center;
-  font-size: 42px;
+  font-size: 44px;
   animation: scamPulse 1s infinite;
 }
 
-.scam-alert-header h1 {
+.scam-hero h1 {
   margin: 0;
-  font-size: 38px;
+  font-size: 42px;
   color: #111827;
 }
 
-.scam-alert-header p {
-  margin: 6px 0 0;
+.scam-hero p {
+  margin: 8px 0 0;
+  max-width: 760px;
   color: #4b5563;
+  line-height: 1.8;
+  font-weight: 700;
+}
+
+.scam-grid {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 22px;
 }
 
 .scam-threat-card,
-.scam-scan-card {
-  margin-top: 28px;
+.scam-popup-card,
+.scam-scan-card,
+.scam-learning-box {
   background: white;
   border: 1px solid #d1d5db;
-  border-radius: 14px;
+  border-radius: 18px;
   padding: 24px;
-  color: #111827;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+}
+
+.card-label {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 10px;
 }
 
 .scam-threat-card h2 {
   margin: 0;
   color: #991b1b;
+  font-size: 26px;
 }
 
 .scam-danger {
@@ -433,9 +1181,30 @@ body {
   color: #991b1b;
 }
 
-.scam-scan-title {
+.scam-popup-card {
+  border: 2px solid #dc2626;
+  animation: popupShake 0.5s infinite;
+}
+
+.scam-popup-card strong {
+  color: #991b1b;
   font-size: 20px;
-  font-weight: 800;
+}
+
+.scam-popup-card p {
+  line-height: 1.7;
+  font-weight: 700;
+}
+
+.scam-scan-card {
+  margin-top: 24px;
+}
+
+.scam-scan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 900;
   margin-bottom: 14px;
 }
 
@@ -448,39 +1217,33 @@ body {
 
 .scam-progress-bar {
   height: 100%;
-  background: #93c5fd;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
   transition: width 0.3s;
 }
 
 .scam-log {
-  margin-top: 28px;
+  margin-top: 24px;
   height: 150px;
-  background: #f8fafc;
-  color: #111827;
-  border: 1px solid #cbd5e1;
-  border-radius: 14px;
-  padding: 16px;
+  background: #0f172a;
+  color: #bbf7d0;
+  border-radius: 16px;
+  padding: 18px;
   font-family: Consolas, monospace;
   overflow-y: auto;
 }
 
-.scam-popup {
-  position: absolute;
-  right: 42px;
-  top: 120px;
-  width: 330px;
-  background: white;
-  color: #111827;
-  border: 2px solid #dc2626;
-  border-radius: 14px;
-  padding: 18px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
-  animation: popupShake 0.5s infinite;
-  pointer-events: none;
+.scam-learning-box {
+  margin-top: 24px;
+  background: #f8fafc;
 }
 
-.scam-popup strong {
-  color: #991b1b;
+.scam-learning-box h3 {
+  margin-top: 0;
+}
+
+.scam-learning-box li {
+  margin-bottom: 8px;
+  line-height: 1.7;
 }
 
 .scam-actions {
@@ -488,22 +1251,23 @@ body {
   display: flex;
   gap: 16px;
   position: relative;
-  z-index: 10;
+  z-index: 20;
 }
 
 .scam-red-button,
 .scam-back-button {
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 16px 28px;
   font-size: 18px;
   font-weight: 900;
   cursor: pointer;
-  color: #111827;
+  transition: 0.2s;
 }
 
 .scam-red-button {
   background: #fecaca;
+  color: #991b1b;
 }
 
 .scam-red-button:hover {
@@ -511,90 +1275,50 @@ body {
 }
 
 .scam-back-button {
-  background: #e5e7eb;
+  background: #2563eb;
+  color: white;
 }
 
 .scam-back-button:hover {
-  background: #d1d5db;
+  background: #1d4ed8;
 }
 
 .scam-note {
-  position: absolute;
-  right: 30px;
-  bottom: 22px;
+  margin-top: 24px;
   color: #6b7280;
   font-size: 13px;
+  font-weight: 700;
 }
 
 /* =========================
-   ANIMATION
+   SCAM MOBILE
 ========================= */
 
-@keyframes scamPulse {
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-@keyframes popupShake {
-  0% {
-    transform: translateX(0);
-  }
-
-  25% {
-    transform: translateX(2px);
-  }
-
-  50% {
-    transform: translateX(-2px);
-  }
-
-  75% {
-    transform: translateX(2px);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 640px) {
-  .app {
-    padding: 14px;
-  }
-
-  .mail-header,
-  .answer-area {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .mail-body {
-    margin-left: 20px;
-    margin-right: 20px;
-    padding: 20px;
-  }
-
-  .mail-header h1 {
-    font-size: 22px;
-  }
-
+@media (max-width: 900px) {
   .scam-sidebar {
     display: none;
   }
 
-  .scam-content {
-    padding: 20px;
+  .scam-grid {
+    grid-template-columns: 1fr;
   }
 
-  .scam-popup {
-    position: static;
-    width: auto;
-    margin-top: 20px;
+  .scam-content {
+    padding: 24px;
+  }
+
+  .scam-hero {
+    align-items: flex-start;
+  }
+
+  .scam-hero h1 {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 640px) {
+  .scam-hero {
+    flex-direction: column;
   }
 
   .scam-actions {
