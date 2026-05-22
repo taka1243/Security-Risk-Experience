@@ -1,15 +1,21 @@
 from flask import Blueprint, send_from_directory
-from os import path
+from pathlib import Path
 
-mail = Blueprint("mail", __name__,)
+mail = Blueprint("mail", __name__)
 
-@mail.route('/dist/mail/<path:filename>')
-def serve_vite_assets(filename):
-    dist = path.join(mail.root_path, "../dist/mail")
-    return send_from_directory(dist, filename)
+DIST_PATH = (
+    Path(__file__).resolve().parent.parent.parent.parent
+    / "mail"
+    / "dist"
+)
 
 @mail.route("/")
 def index():
-    dist = path.join(mail.root_path, "../dist/mail")
-    return send_from_directory('dist', "index.html")
+    return send_from_directory(DIST_PATH, "index.html")
 
+@mail.route("/assets/<path:filename>")
+def assets(filename):
+    return send_from_directory(
+        DIST_PATH / "assets",
+        filename
+    )
