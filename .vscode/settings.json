@@ -1,7 +1,7 @@
 {
     "files.exclude": {
-        "mail": true,
-        "fake-support": true,
-        "backend": true
+        "mail": false,
+        "fake-support": false,
+        "backend": false
     }
 }
