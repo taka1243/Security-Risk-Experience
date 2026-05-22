@@ -1,35 +1,253 @@
 [
-    {
-        "id": 1,
-        "type": "アカウント停止で脅す型",
-        "isPhishing": true,
-        "subject": "【重要】アカウント停止のお知らせ",
-        "senderName": "情報システム管理室",
-        "senderEmail": "support@example-security-check.com",
-        "body": "利用者各位\n\n現在、お客様のアカウントにおいて不審なログインが検出されました。\n\n安全確保のため、一時的にアカウント機能の制限を行っております。\n\n下記のリンクよりご本人確認を行ってください。\n確認が完了しない場合、アカウントは本日中に停止される可能性があります。\n\nご不明な点がございましたらお問い合わせください。",
-        "linkText": "▼確認はこちら",
-        "linkUrl": "http://example-security-check.com",
-        "suspiciousPoints": [
-            "「本日中」と急がせている",
-            "個人名が書かれていない",
-            "URLが公式サイトではない",
-            "不審ログインの詳細説明がない"
-        ]
-    },
-    {
-        "id": 2,
-        "type": "通常メール",
-        "isPhishing": false,
-        "subject": "授業資料公開のお知らせ",
-        "senderName": "情報セキュリティ演習",
-        "senderEmail": "teacher@university.ac.jp",
-        "body": "受講者各位\n\n本日の授業資料をLMSに公開しました。\n\n次回の授業までに内容を確認しておいてください。\n\nよろしくお願いいたします。",
-        "linkText": "LMSを開く",
-        "linkUrl": "https://lms.university.ac.jp",
-        "suspiciousPoints": [
-            "公式ドメインから送信されている",
-            "不自然に急がせていない",
-            "個人情報の入力を求めていない"
-        ]
-    }
+  {
+    "id": 1,
+    "type": "アカウント停止で脅す型",
+    "layout": "warning",
+    "isPhishing": true,
+    "subject": "【重要】アカウント停止のお知らせ",
+    "senderName": "情報システム管理室",
+    "senderEmail": "support@example-security-check.com",
+    "body": "利用者各位\n\n現在、お客様のアカウントにおいて不審なログインが検出されました。\n\n安全確保のため、一時的にアカウント機能の制限を行っております。\n\n下記のリンクよりご本人確認を行ってください。\n確認が完了しない場合、アカウントは本日中に停止される可能性があります。\n\nご不明な点がございましたらお問い合わせください。",
+    "linkText": "▼確認はこちら",
+    "linkUrl": "http://account-check-verify-7421.example.invalid",
+    "suspiciousPoints": [
+      "「本日中」と急がせている",
+      "個人名が書かれていない",
+      "URLが公式サイトではない",
+      "不審ログインの詳細説明がない"
+    ]
+  },
+  {
+    "id": 2,
+    "type": "賞品や得で釣る型",
+    "layout": "prize",
+    "isPhishing": true,
+    "subject": "【当選のお知らせ】Amazonギフト券 10,000円分プレゼント",
+    "senderName": "キャンペーン事務局",
+    "senderEmail": "campaign@gift-present-campaign.com",
+    "body": "お客様へ\n\n日頃のご利用への感謝を込めて、抽選キャンペーンを実施しております。\n\nこのたび、お客様が「Amazonギフト券 10,000円分」の当選対象者に選ばれました。\n\n賞品を受け取るには、以下のページより受け取り手続きを完了してください。\n\n※本キャンペーンは本日23:59まで有効です。\n\n期限を過ぎると受け取り権利は失効となります。",
+    "linkText": "▼受け取りページ",
+    "linkUrl": "http://gift-present-campaign-9182.example.invalid",
+    "suspiciousPoints": [
+      "突然の当選で不自然",
+      "応募した記憶がない",
+      "URLが公式サイトではない",
+      "期限を短くして急がせている"
+    ]
+  },
+  {
+    "id": 3,
+    "type": "パスワード変更を装う型",
+    "layout": "password",
+    "isPhishing": true,
+    "subject": "【セキュリティ確認】パスワード変更のお願い",
+    "senderName": "アカウントセキュリティセンター",
+    "senderEmail": "security@account-security-reset.com",
+    "body": "お客様各位\n\n通常とは異なるアクセスが確認されました。\n\n安全確保のため、パスワードの再設定をお願いいたします。\n\n以下のページよりパスワード変更を行ってください。",
+    "linkText": "▼パスワード再設定",
+    "linkUrl": "http://password-reset-confirm-5041.example.invalid",
+    "suspiciousPoints": [
+      "URLが公式サイトではない",
+      "急がせている",
+      "アクセス情報の詳細がない"
+    ]
+  },
+  {
+    "id": 4,
+    "type": "学校や会社の事務連絡っぽく見せる型",
+    "layout": "school",
+    "isPhishing": true,
+    "subject": "【学生課より】履修登録情報確認のお願い",
+    "senderName": "学務サポートセンター",
+    "senderEmail": "support@university-support-check.com",
+    "body": "学生各位\n\n履修登録情報の確認作業を行っております。\n\n以下のページにアクセスし、登録内容を確認してください。",
+    "linkText": "▼履修確認ページ",
+    "linkUrl": "http://student-record-check-1835.example.invalid",
+    "suspiciousPoints": [
+      "大学公式ドメインではない",
+      "不安を煽っている",
+      "期限を短く設定している"
+    ]
+  },
+  {
+    "id": 5,
+    "type": "宅配や請求に見せる型",
+    "layout": "delivery",
+    "isPhishing": true,
+    "subject": "【お荷物のお届けについて】再配達手続きのお願い",
+    "senderName": "配送サポートセンター",
+    "senderEmail": "delivery@delivery-support-center.com",
+    "body": "ご不在のため、お荷物をお届けできませんでした。\n\n再配達をご希望の場合は以下より手続きを行ってください。",
+    "linkText": "▼再配達受付",
+    "linkUrl": "http://delivery-reserve-form-6604.example.invalid",
+    "suspiciousPoints": [
+      "配送会社名がない",
+      "URLが公式サイトではない",
+      "荷物番号が記載されていない"
+    ]
+  },
+  {
+    "id": 6,
+    "type": "知人や上司を装う型",
+    "layout": "shared",
+    "isPhishing": true,
+    "subject": "至急確認お願いします",
+    "senderName": "田中教授",
+    "senderEmail": "tanaka-prof@shared-file-check.com",
+    "body": "会議資料を共有しました。\n\n以下のリンクから確認をお願いします。",
+    "linkText": "▼共有ファイルを開く",
+    "linkUrl": "http://shared-document-view-7208.example.invalid",
+    "suspiciousPoints": [
+      "共有サイトが不自然",
+      "送信元アドレスが怪しい",
+      "急がせている"
+    ]
+  },
+  {
+    "id": 7,
+    "type": "サポートを装う型",
+    "layout": "support",
+    "isPhishing": true,
+    "subject": "【重要】サポート窓口からのご連絡",
+    "senderName": "カスタマーサポート",
+    "senderEmail": "support@support-center-help.com",
+    "body": "アカウントに問題が確認されました。\n\n以下のページから必要情報をご入力ください。",
+    "linkText": "▼サポートページ",
+    "linkUrl": "http://customer-support-input-3761.example.invalid",
+    "suspiciousPoints": [
+      "サービス名が不明",
+      "個人情報入力を要求している",
+      "URLが怪しい"
+    ]
+  },
+  {
+    "id": 8,
+    "type": "アンケートや出欠確認を装う型",
+    "layout": "survey",
+    "isPhishing": true,
+    "subject": "【回答必須】授業出欠確認アンケート",
+    "senderName": "教育支援センター",
+    "senderEmail": "survey@student-questionnaire-check.com",
+    "body": "出欠確認アンケートを実施しています。\n\n以下より回答してください。",
+    "linkText": "▼アンケート回答",
+    "linkUrl": "http://attendance-survey-form-8453.example.invalid",
+    "suspiciousPoints": [
+      "回答必須を強調している",
+      "大学公式URLではない",
+      "期限を急かしている"
+    ]
+  },
+  {
+    "id": 9,
+    "type": "添付ファイルを開かせる型",
+    "layout": "attachment",
+    "isPhishing": true,
+    "subject": "【重要】請求書ファイル送付のお知らせ",
+    "senderName": "経理サポート窓口",
+    "senderEmail": "billing@invoice-confirmation-support.com",
+    "body": "請求書ファイルを添付しております。\n\n内容をご確認ください。",
+    "linkText": "📎 invoice_confirmation.zip",
+    "linkUrl": "http://invoice-file-download-6192.example.invalid",
+    "suspiciousPoints": [
+      "zipファイルを開かせようとしている",
+      "請求内容が書かれていない",
+      "送信元が怪しい"
+    ]
+  },
+  {
+    "id": 10,
+    "type": "通常メール：Amazon",
+    "layout": "amazon",
+    "isPhishing": false,
+    "subject": "Amazon.co.jp ご注文の発送",
+    "senderName": "Amazon",
+    "senderEmail": "auto-confirm@amazon.co.jp",
+    "body": "ご注文いただいた商品を発送しました。\n\n配送状況は注文履歴から確認できます。",
+    "linkText": "注文履歴を見る",
+    "linkUrl": "https://www.amazon.co.jp/",
+    "suspiciousPoints": [
+      "公式ドメインを利用している",
+      "不自然な要求がない"
+    ]
+  },
+  {
+    "id": 11,
+    "type": "通常メール：Steam",
+    "layout": "steam",
+    "isPhishing": false,
+    "subject": "Steam セール開催中",
+    "senderName": "Steam",
+    "senderEmail": "noreply@steampowered.com",
+    "body": "Steamにて大型セールを開催しています。\n\nお気に入りのゲームをチェックしてください。",
+    "linkText": "Steamを開く",
+    "linkUrl": "https://store.steampowered.com/",
+    "suspiciousPoints": [
+      "公式URLを使用している",
+      "急がせる表現が少ない"
+    ]
+  },
+  {
+    "id": 12,
+    "type": "通常メール：GitHub",
+    "layout": "github",
+    "isPhishing": false,
+    "subject": "New sign-in to GitHub",
+    "senderName": "GitHub",
+    "senderEmail": "noreply@github.com",
+    "body": "新しい端末からGitHubへのログインがありました。",
+    "linkText": "アクティビティを確認",
+    "linkUrl": "https://github.com/",
+    "suspiciousPoints": [
+      "公式ドメインを利用している",
+      "GitHub公式メール形式"
+    ]
+  },
+  {
+    "id": 13,
+    "type": "通常メール：Google",
+    "layout": "google",
+    "isPhishing": false,
+    "subject": "Google セキュリティ通知",
+    "senderName": "Google",
+    "senderEmail": "no-reply@accounts.google.com",
+    "body": "お使いのGoogleアカウントのセキュリティ情報を更新しました。",
+    "linkText": "Googleアカウントを開く",
+    "linkUrl": "https://accounts.google.com/",
+    "suspiciousPoints": [
+      "Google公式ドメイン",
+      "個人情報入力を要求していない"
+    ]
+  },
+  {
+    "id": 14,
+    "type": "通常メール：Discord",
+    "layout": "discord",
+    "isPhishing": false,
+    "subject": "Discord ログイン通知",
+    "senderName": "Discord",
+    "senderEmail": "noreply@discord.com",
+    "body": "新しいログインが検出されました。",
+    "linkText": "Discordを開く",
+    "linkUrl": "https://discord.com/",
+    "suspiciousPoints": [
+      "Discord公式ドメイン",
+      "不自然なリンクがない"
+    ]
+  },
+  {
+    "id": 15,
+    "type": "通常メール：授業連絡",
+    "layout": "school-normal",
+    "isPhishing": false,
+    "subject": "授業資料公開のお知らせ",
+    "senderName": "情報セキュリティ演習",
+    "senderEmail": "teacher@university.ac.jp",
+    "body": "本日の授業資料をLMSへ公開しました。\n\n次回までに確認してください。",
+    "linkText": "LMSを開く",
+    "linkUrl": "https://lms.university.ac.jp",
+    "suspiciousPoints": [
+      "大学公式ドメイン",
+      "自然な内容"
+    ]
+  }
 ]
