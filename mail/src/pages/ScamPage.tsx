@@ -1,247 +1,154 @@
 import { useEffect, useState } from "react";
 
-type Popup = {
-    id: number;
-    message: string;
-    left: number;
-    top: number;
+type ScamPageProps = {
+    onBack: () => void;
 };
 
-function ScamPage() {
+const scanMessages = [
+    "システムファイルを確認中...",
+    "ブラウザキャッシュを確認中...",
+    "保存された認証情報を確認中...",
+    "不審な通信を検出...",
+    "脅威を隔離できません...",
+];
+
+const alerts = [
+    "不審なログインが検出されました",
+    "保存済みパスワードが危険にさらされている可能性があります",
+    "外部サーバーへの通信を検出しました",
+    "ブラウザ設定が変更されています",
+];
+
+function ScamPage({ onBack }: ScamPageProps) {
     const [progress, setProgress] = useState(0);
-    const [scanStatus, setScanStatus] = useState("Scanning Downloads...");
-    const [cmdLines, setCmdLines] = useState<string[]>([]);
-    const [popups, setPopups] = useState<Popup[]>([]);
+    const [message, setMessage] = useState(scanMessages[0]);
+    const [logs, setLogs] = useState<string[]>([]);
+    const [popup, setPopup] = useState(alerts[0]);
 
     useEffect(() => {
-        const scanMessages = [
-            "Scanning Downloads...",
-            "Checking Browser Cache...",
-            "Analyzing Password Database...",
-            "Inspecting Startup Programs...",
-            "Threat detected...",
-            "Registry access detected...",
-        ];
-
-        const progressTimer = setInterval(() => {
+        const timer = setInterval(() => {
             setProgress((prev) => {
-                const next = Math.min(prev + Math.random() * 5, 100);
-
-                setScanStatus(
-                    scanMessages[Math.floor(Math.random() * scanMessages.length)]
-                );
-
-                if (next >= 100) {
-                    clearInterval(progressTimer);
-                }
-
+                const next = Math.min(prev + 6, 100);
+                setMessage(scanMessages[Math.floor(Math.random() * scanMessages.length)]);
                 return next;
             });
         }, 500);
 
-        return () => clearInterval(progressTimer);
+        return () => clearInterval(timer);
     }, []);
 
     useEffect(() => {
-        const lines = [
-            "Initializing Defender Engine...",
-            "Checking System32...",
-            "Trojan detected...",
-            "Browser passwords accessed...",
-            "Credential leak suspected...",
-            "Security breach confirmed...",
-            "Remote access attempt detected...",
+        const logLines = [
+            "Security scan started...",
+            "Checking browser storage...",
+            "Suspicious URL detected...",
+            "Credential risk detected...",
+            "User action required...",
         ];
 
         let index = 0;
 
-        const cmdTimer = setInterval(() => {
-            if (index >= lines.length) {
-                clearInterval(cmdTimer);
-                return;
-            }
-
-            setCmdLines((prev) => [...prev, lines[index]]);
+        const timer = setInterval(() => {
+            if (index >= logLines.length) return;
+            setLogs((prev) => [...prev, logLines[index]]);
             index++;
         }, 900);
 
-        return () => clearInterval(cmdTimer);
+        return () => clearInterval(timer);
     }, []);
 
     useEffect(() => {
-        const messages = [
-            "Unauthorized access detected",
-            "Banking credentials may be compromised",
-            "Suspicious network activity found",
-            "Windows Firewall disabled",
-            "Remote connection attempt detected",
-            "Your files may be at risk",
-            "Browser passwords exposed",
-            "Trojan spreading detected",
-        ];
+        const timer = setInterval(() => {
+            setPopup(alerts[Math.floor(Math.random() * alerts.length)]);
+        }, 2000);
 
-        const popupTimer = setInterval(() => {
-            const popup: Popup = {
-                id: Date.now(),
-                message: messages[Math.floor(Math.random() * messages.length)],
-                left: Math.random() * (window.innerWidth - 340),
-                top: Math.random() * (window.innerHeight - 240),
-            };
-
-            setPopups((prev) => [...prev, popup]);
-
-            setTimeout(() => {
-                setPopups((prev) =>
-                    prev.filter((item) => item.id !== popup.id)
-                );
-            }, 7000);
-        }, 1800);
-
-        return () => clearInterval(popupTimer);
-    }, []);
-
-    useEffect(() => {
-        const enterFullscreen = async () => {
-            try {
-                if (!document.fullscreenElement) {
-                    await document.documentElement.requestFullscreen();
-                }
-            } catch {
-                // ブラウザの制限で失敗することがあるため無視
-            }
-        };
-
-        enterFullscreen();
-
-        document.addEventListener("click", enterFullscreen);
-        document.addEventListener("keydown", enterFullscreen);
-
-        return () => {
-            document.removeEventListener("click", enterFullscreen);
-            document.removeEventListener("keydown", enterFullscreen);
-        };
+        return () => clearInterval(timer);
     }, []);
 
     return (
         <div className="scam-page">
-            <div className="windows-frame">
-                <div className="titlebar">
-                    <div className="title-left">
-                        <div className="defender-icon"></div>
-                        <span>Windows Security</span>
+            <div className="scam-window">
+                <div className="scam-titlebar">
+                    <div className="scam-title-left">
+                        <div className="scam-shield">!</div>
+                        <span>Security Warning Simulation</span>
                     </div>
-
-                    <div className="window-buttons">
-                        <div>─</div>
-                        <div>□</div>
-                        <div>✕</div>
-                    </div>
+                    <button className="scam-close-button" onClick={onBack}>
+                        ✕
+                    </button>
                 </div>
 
-                <div className="main-area">
-                    <div className="sidebar">
-                        <div className="sidebar-item active">
-                            Virus & threat protection
-                        </div>
+                <div className="scam-main">
+                    <aside className="scam-sidebar">
+                        <div className="scam-sidebar-active">Virus & threat protection</div>
+                        <div>Account protection</div>
+                        <div>Firewall & network</div>
+                        <div>App & browser control</div>
+                    </aside>
 
-                        <div className="sidebar-item">Account protection</div>
-                        <div className="sidebar-item">Firewall & network</div>
-                        <div className="sidebar-item">App & browser control</div>
-                        <div className="sidebar-item">Device security</div>
-                    </div>
-
-                    <div className="content">
-                        <div className="header">
-                            <div className="alert-circle">!</div>
-
+                    <section className="scam-content">
+                        <div className="scam-alert-header">
+                            <div className="scam-alert-icon">⚠</div>
                             <div>
-                                <div className="headline">Threats found</div>
-
-                                <div className="subheadline">
-                                    Microsoft Defender Antivirus found threats.
-                                </div>
+                                <h1>Threats found</h1>
+                                <p>この画面は教育用の疑似サポート詐欺体験です。</p>
                             </div>
                         </div>
 
-                        <div className="threat-box">
-                            <div className="threat-title">
-                                Trojan:Win32/CredentialStealer
-                            </div>
-
-                            <div className="threat-level">Severe</div>
-
-                            <div className="threat-description">
-                                This program is dangerous and executes commands from an attacker.
-                            </div>
+                        <div className="scam-threat-card">
+                            <h2>Trojan:Demo/CredentialRisk</h2>
+                            <p className="scam-danger">Risk level: Severe</p>
+                            <p>
+                                不安をあおる警告画面が表示された場合、電話番号に連絡したり、
+                                個人情報を入力したりしないでください。
+                            </p>
                         </div>
 
-                        <div className="scan-section">
-                            <div className="scan-header">
-                                Quick scan in progress...
-                            </div>
+                        <div className="scam-scan-card">
+                            <div className="scam-scan-title">Quick scan in progress...</div>
 
-                            <div className="progress-wrapper">
+                            <div className="scam-progress">
                                 <div
-                                    id="progress-bar"
+                                    className="scam-progress-bar"
                                     style={{ width: `${progress}%` }}
-                                ></div>
+                                />
                             </div>
 
-                            <div id="scan-status">{scanStatus}</div>
+                            <p>{message}</p>
                         </div>
 
-                        <div className="cmd-box">
-                            {cmdLines.map((line, index) => (
+                        <div className="scam-log">
+                            {logs.map((line, index) => (
                                 <div key={index}>{"> " + line}</div>
                             ))}
                         </div>
 
-                        <div className="warning-banner">
-                            Your passwords and banking information may be at risk.
+                        <div className="scam-popup">
+                            <strong>Security Alert</strong>
+                            <p>{popup}</p>
                         </div>
 
-                        <button
-                            className="action-button"
-                            onClick={() => {
-                                alert("これは教育用のサポート詐欺体験画面です。");
-                            }}
-                        >
-                            Contact Microsoft Support
-                        </button>
+                        <div className="scam-actions">
+                            <button
+                                className="scam-red-button"
+                                onClick={() => {
+                                    alert("これは教育用デモです。実際のサポート窓口ではありません。");
+                                }}
+                            >
+                                Contact Support
+                            </button>
 
-                        <div className="footer-note">
+                            <button className="scam-back-button" onClick={onBack}>
+                                問題に戻る
+                            </button>
+                        </div>
+
+                        <div className="scam-note">
                             Cybersecurity awareness simulation
                         </div>
-                    </div>
+                    </section>
                 </div>
             </div>
-
-            {popups.map((popup) => (
-                <div
-                    key={popup.id}
-                    className="fake-popup"
-                    style={{
-                        left: `${popup.left}px`,
-                        top: `${popup.top}px`,
-                    }}
-                >
-                    <div className="popup-header">
-                        Windows Security Alert
-                    </div>
-
-                    <div className="popup-body">
-                        <div className="popup-icon">⚠</div>
-
-                        <div className="popup-message">
-                            {popup.message}
-                        </div>
-
-                        <button className="popup-button">
-                            Scan Now
-                        </button>
-                    </div>
-                </div>
-            ))}
         </div>
     );
 }

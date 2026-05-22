@@ -2,11 +2,29 @@
   box-sizing: border-box;
 }
 
-body {
+html,
+body,
+#root {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  width: 100%;
+  min-height: 100%;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   background: #f1f3f6;
+  color: #111827;
 }
+
+body {
+  overflow-x: hidden;
+}
+
+/* =========================
+   START / RESULT
+========================= */
 
 .app,
 .start-screen,
@@ -22,8 +40,8 @@ body {
 .start-screen,
 .result-screen {
   flex-direction: column;
-  background: linear-gradient(135deg, #111827, #1f2937);
-  color: white;
+  background: #f8fafc;
+  color: #111827;
 }
 
 .start-screen h1,
@@ -45,6 +63,15 @@ body {
   cursor: pointer;
 }
 
+.start-screen button:hover,
+.result-screen button:hover {
+  background: #0ea5e9;
+}
+
+/* =========================
+   MAIL
+========================= */
+
 .mail-window {
   width: min(920px, 100%);
   background: white;
@@ -64,73 +91,66 @@ body {
   font-size: 14px;
 }
 
-.mail-category {
+.mail-count {
   font-weight: 700;
-}
-
-.brand-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 22px 28px;
-  color: white;
-}
-
-.brand-logo {
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: 26px;
-}
-
-.brand-name {
-  font-size: 22px;
-  font-weight: 900;
-}
-
-.brand-sub {
-  opacity: 0.9;
 }
 
 .mail-header {
   padding: 26px 32px 16px;
 }
 
-.mail-type {
+.mail-type-label {
   display: inline-block;
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 13px;
   font-weight: 800;
   margin-bottom: 14px;
-}
-
-.mail-type.danger {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.mail-type.safe {
-  background: #dcfce7;
-  color: #166534;
+  background: #dbeafe;
+  color: #1d4ed8;
 }
 
 .mail-header h1 {
   margin: 0 0 18px;
   font-size: 28px;
   line-height: 1.35;
+}
+
+.phishing-title {
+  color: #991b1b;
+}
+
+.normal-title {
   color: #111827;
 }
 
 .sender-area {
+  display: flex;
+  gap: 14px;
+  align-items: center;
   padding: 12px 14px;
   border-radius: 14px;
   background: #f8fafc;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111827;
+  font-weight: 900;
+  font-size: 20px;
+}
+
+.phishing-avatar {
+  background: #fecaca;
+}
+
+.normal-avatar {
+  background: #bfdbfe;
 }
 
 .sender-name {
@@ -147,10 +167,18 @@ body {
   margin: 10px 32px 28px;
   padding: 28px;
   border-radius: 18px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
   line-height: 1.8;
-  color: #1f2937;
+  color: #111827;
+}
+
+.phishing-body {
+  border: 2px solid #fecaca;
+  background: #fff7f7;
+}
+
+.normal-body {
+  border: 1px solid #e5e7eb;
+  background: white;
 }
 
 .mail-body p {
@@ -168,7 +196,10 @@ body {
   border-radius: 12px;
   font-weight: 900;
   text-decoration: none;
-  transition: transform 0.15s, box-shadow 0.15s;
+  color: #111827;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
 }
 
 .mail-link:hover {
@@ -177,25 +208,16 @@ body {
 }
 
 .suspicious-link {
-  background: #dc2626;
-  color: white;
+  background: #fecaca;
 }
 
 .normal-link {
-  background: #2563eb;
-  color: white;
+  background: #bfdbfe;
 }
 
-.url-preview {
-  margin-top: 12px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: #f8fafc;
-  color: #475569;
-  font-size: 13px;
-  word-break: break-all;
-  border: 1px dashed #cbd5e1;
-}
+/* =========================
+   ANSWER
+========================= */
 
 .answer-area {
   padding: 24px 32px 32px;
@@ -222,22 +244,26 @@ body {
   padding: 13px 20px;
   font-weight: 900;
   cursor: pointer;
+  color: #111827;
 }
 
 .safe-answer-button {
-  background: #16a34a;
-  color: white;
+  background: #bbf7d0;
 }
 
 .phishing-answer-button {
-  background: #dc2626;
-  color: white;
+  background: #fecaca;
 }
+
+/* =========================
+   RESULT BOX
+========================= */
 
 .result-box {
   margin: 0 32px 32px;
   padding: 24px;
   border-radius: 18px;
+  color: #111827;
 }
 
 .correct-result {
@@ -256,112 +282,285 @@ body {
 
 .result-box button {
   margin-top: 14px;
-  background: #111827;
-  color: white;
-}
-
-/* phishing layouts */
-
-.layout-warning .brand-header,
-.layout-password .brand-header {
-  background: linear-gradient(135deg, #991b1b, #ef4444);
-}
-
-.layout-prize .brand-header {
-  background: linear-gradient(135deg, #92400e, #f59e0b);
-}
-
-.layout-school .brand-header,
-.layout-survey .brand-header {
-  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-}
-
-.layout-delivery .brand-header {
-  background: linear-gradient(135deg, #7c2d12, #ea580c);
-}
-
-.layout-shared .brand-header {
-  background: linear-gradient(135deg, #581c87, #a855f7);
-}
-
-.layout-support .brand-header {
-  background: linear-gradient(135deg, #7f1d1d, #dc2626);
-}
-
-.layout-attachment .brand-header {
-  background: linear-gradient(135deg, #111827, #6b7280);
-}
-
-.layout-warning .mail-body,
-.layout-password .mail-body,
-.layout-support .mail-body,
-.layout-attachment .mail-body {
-  border: 2px solid #fecaca;
-  background: #fff7f7;
-}
-
-.layout-prize .mail-body {
-  border: 2px solid #fde68a;
-  background: #fffbeb;
-}
-
-.layout-delivery .mail-body {
-  border: 2px solid #fed7aa;
-  background: #fff7ed;
-}
-
-.layout-school .mail-body,
-.layout-survey .mail-body {
-  border: 2px solid #bfdbfe;
-  background: #eff6ff;
-}
-
-.layout-attachment .mail-link::before {
-  content: "📎 ";
-}
-
-/* normal brand layouts */
-
-.layout-amazon .brand-header {
-  background: linear-gradient(135deg, #111827, #f59e0b);
-}
-
-.layout-steam .brand-header {
-  background: linear-gradient(135deg, #0f172a, #2563eb);
-}
-
-.layout-github .brand-header {
-  background: linear-gradient(135deg, #111827, #374151);
-}
-
-.layout-google .brand-header {
-  background: linear-gradient(135deg, #2563eb, #22c55e);
-}
-
-.layout-discord .brand-header {
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-}
-
-.layout-amazon .normal-link {
-  background: #f59e0b;
+  background: #e5e7eb;
   color: #111827;
 }
 
-.layout-steam .normal-link {
-  background: #1d4ed8;
+.result-box button:hover {
+  background: #d1d5db;
 }
 
-.layout-github .normal-link {
-  background: #111827;
+/* =========================
+   SCAM PAGE
+========================= */
+
+.scam-page {
+  position: fixed;
+  inset: 0;
+  background: #eef1f5;
+  color: #111827;
+  z-index: 9999;
+  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-.layout-google .normal-link {
-  background: #2563eb;
+.scam-window {
+  width: 100vw;
+  height: 100vh;
+  background: #f3f4f6;
+  display: flex;
+  flex-direction: column;
 }
 
-.layout-discord .normal-link {
-  background: #5865f2;
+.scam-titlebar {
+  height: 48px;
+  background: white;
+  border-bottom: 1px solid #d1d5db;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 14px;
+  color: #111827;
 }
+
+.scam-title-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.scam-shield {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: #bfdbfe;
+  color: #111827;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.scam-close-button {
+  border: none;
+  background: transparent;
+  color: #111827;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px 14px;
+}
+
+.scam-close-button:hover {
+  background: #fee2e2;
+}
+
+.scam-main {
+  flex: 1;
+  display: flex;
+}
+
+.scam-sidebar {
+  width: 260px;
+  background: white;
+  border-right: 1px solid #d1d5db;
+  padding: 20px 0;
+}
+
+.scam-sidebar div {
+  padding: 16px 24px;
+  font-size: 15px;
+  color: #111827;
+}
+
+.scam-sidebar-active {
+  background: #dbeafe;
+  border-left: 5px solid #2563eb;
+  font-weight: 800;
+}
+
+.scam-content {
+  flex: 1;
+  padding: 42px;
+  position: relative;
+  color: #111827;
+}
+
+.scam-alert-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.scam-alert-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #fecaca;
+  color: #111827;
+  display: grid;
+  place-items: center;
+  font-size: 42px;
+  animation: scamPulse 1s infinite;
+}
+
+.scam-alert-header h1 {
+  margin: 0;
+  font-size: 38px;
+  color: #111827;
+}
+
+.scam-alert-header p {
+  margin: 6px 0 0;
+  color: #4b5563;
+}
+
+.scam-threat-card,
+.scam-scan-card {
+  margin-top: 28px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  padding: 24px;
+  color: #111827;
+}
+
+.scam-threat-card h2 {
+  margin: 0;
+  color: #991b1b;
+}
+
+.scam-danger {
+  font-weight: 900;
+  color: #991b1b;
+}
+
+.scam-scan-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.scam-progress {
+  height: 28px;
+  background: #d1d5db;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.scam-progress-bar {
+  height: 100%;
+  background: #93c5fd;
+  transition: width 0.3s;
+}
+
+.scam-log {
+  margin-top: 28px;
+  height: 150px;
+  background: #f8fafc;
+  color: #111827;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 16px;
+  font-family: Consolas, monospace;
+  overflow-y: auto;
+}
+
+.scam-popup {
+  position: absolute;
+  right: 42px;
+  top: 120px;
+  width: 330px;
+  background: white;
+  color: #111827;
+  border: 2px solid #dc2626;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+  animation: popupShake 0.5s infinite;
+  pointer-events: none;
+}
+
+.scam-popup strong {
+  color: #991b1b;
+}
+
+.scam-actions {
+  margin-top: 28px;
+  display: flex;
+  gap: 16px;
+  position: relative;
+  z-index: 10;
+}
+
+.scam-red-button,
+.scam-back-button {
+  border: none;
+  border-radius: 10px;
+  padding: 16px 28px;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+  color: #111827;
+}
+
+.scam-red-button {
+  background: #fecaca;
+}
+
+.scam-red-button:hover {
+  background: #fca5a5;
+}
+
+.scam-back-button {
+  background: #e5e7eb;
+}
+
+.scam-back-button:hover {
+  background: #d1d5db;
+}
+
+.scam-note {
+  position: absolute;
+  right: 30px;
+  bottom: 22px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes scamPulse {
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes popupShake {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(2px);
+  }
+
+  50% {
+    transform: translateX(-2px);
+  }
+
+  75% {
+    transform: translateX(2px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 640px) {
   .app {
@@ -382,5 +581,23 @@ body {
 
   .mail-header h1 {
     font-size: 22px;
+  }
+
+  .scam-sidebar {
+    display: none;
+  }
+
+  .scam-content {
+    padding: 20px;
+  }
+
+  .scam-popup {
+    position: static;
+    width: auto;
+    margin-top: 20px;
+  }
+
+  .scam-actions {
+    flex-direction: column;
   }
 }
