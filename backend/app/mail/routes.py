@@ -3,11 +3,7 @@ from pathlib import Path
 
 mail = Blueprint("mail", __name__)
 
-DIST_PATH = (
-    Path(__file__).resolve().parent.parent.parent.parent
-    / "mail"
-    / "dist"
-)
+DIST_PATH = Path(__file__).resolve().parents[3] / "mail" / "dist"
 
 @mail.route("/")
 def index():
@@ -15,7 +11,4 @@ def index():
 
 @mail.route("/assets/<path:filename>")
 def assets(filename):
-    return send_from_directory(
-        DIST_PATH / "assets",
-        filename
-    )
+    return send_from_directory(DIST_PATH / "assets", filename)
