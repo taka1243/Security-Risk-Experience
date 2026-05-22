@@ -1,7 +1,0 @@
-{
-    "files.exclude": {
-        "mail": false,
-        "fake-support": false,
-        "backend": false
-    }
-}
