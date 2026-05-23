@@ -115,20 +115,29 @@ function App() {
     const result = await res.json();
 
     setIsCorrect(result.correct);
-      
 
-      if (!result.correct && !mail.isPhishing && answer === "phishing") {
-        setCombo(0);
-        setWrongMail(mail);
-        setPage("wrongNormal");
+
+    if (!result.correct && !mail.isPhishing && answer === "phishing") {
+      const nextLife = life - 1;
+
+      setLife(nextLife);
+      setCombo(0);
+      setWrongMail(mail);
+
+      if (nextLife <= 0) {
+        setPage("result");
         return;
       }
 
-      if (result.goToSupportScam) {
-        const nextLife = life - 1;
+      setPage("wrongNormal");
+      return;
+    }
 
-        setLife(nextLife);
-        setCombo(0);
+    if (result.goToSupportScam) {
+      const nextLife = life - 1;
+
+      setLife(nextLife);
+      setCombo(0);
 
       if (nextLife <= 0) {
         setPage("result");
@@ -228,9 +237,9 @@ function App() {
   }
 
   if (page === "wrongNormal") {
-  return (
-    <div className="wrong-normal-screen">
-      <div className="wrong-normal-card">
+    return (
+      <div className="wrong-normal-screen">
+        <div className="wrong-normal-card">
           <div className="result-badge result-badge-danger">
             MISS
           </div>
@@ -270,16 +279,16 @@ function App() {
           )}
 
           <button
-  className="result-main-button"
-  onClick={() => {
-    setShowResult(false);
-    setIsCorrect(null);
-    setWrongMail(null);
-    setPage("game");
-  }}
->
-  問題に戻る
-</button>
+            className="result-main-button"
+            onClick={() => {
+              setShowResult(false);
+              setIsCorrect(null);
+              setWrongMail(null);
+              setPage("game");
+            }}
+          >
+            問題に戻る
+          </button>
         </div>
       </div>
     );

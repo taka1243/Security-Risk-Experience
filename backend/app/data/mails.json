@@ -87,20 +87,20 @@
     ]
   },
   {
-     "id": 6,
-  "type": "フィッシングメール：Amazon偽装",
-  "layout": "amazon",
-  "isPhishing": true,
-  "subject": "Amazon.co.jp ご注文の発送",
-  "senderName": "Amazon",
-  "senderEmail": "auto-confirm@amazon.co.jp",
-  "body": "ご注文いただいた商品を発送しました。\n\n配送状況は注文履歴から確認できます。",
-  "linkText": "注文履歴を見る",
-  "linkUrl": "https://www.aamazon.co.jp/",
-  "suspiciousPoints": [
-    "URLのドメインが『aamazon』になっている",
-    "公式サイトに見せかけた偽URL",
-    "送信元やデザインが本物でもURL確認が重要"
+    "id": 6,
+    "type": "フィッシングメール：Amazon偽装",
+    "layout": "amazon",
+    "isPhishing": true,
+    "subject": "Amazon.co.jp ご注文の発送",
+    "senderName": "Amazon",
+    "senderEmail": "auto-confirm@amazon.co.jp",
+    "body": "ご注文いただいた商品を発送しました。\n\n配送状況は注文履歴から確認できます。",
+    "linkText": "注文履歴を見る",
+    "linkUrl": "https://www.aamazon.co.jp/",
+    "suspiciousPoints": [
+      "URLのドメインが『aamazon』になっている",
+      "公式サイトに見せかけた偽URL",
+      "送信元やデザインが本物でもURL確認が重要"
     ]
   },
   {
